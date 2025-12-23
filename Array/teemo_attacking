@@ -1,0 +1,28 @@
+#include<iostream>
+#include<vector>
+#include<algorithm>
+using namespace std;
+int teemo_attacking(vector<int> &a,int duration)
+{
+    if(a.empty()||duration==0)
+    {
+        return 0;
+    }
+    int totalpoisonedtime=0;
+    for(int i=0;i<a.size()-1;i++)
+    {
+        totalpoisonedtime+=min(a[i+1]-a[i],duration);
+    }
+    totalpoisonedtime+=duration;
+    return totalpoisonedtime;
+}
+int main()
+{
+    int a[]={1,4};
+    vector<int> v(a,a+sizeof(a)/sizeof(a[0]));
+    int duration=2;
+    int result=teemo_attacking(v,duration);
+    cout<<"total time Ashe poisoned is:"<<result;
+    return 0;
+
+}
