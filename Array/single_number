@@ -1,0 +1,22 @@
+#include<iostream>
+#include<vector>
+using namespace std;
+int single_number(vector<int>& nums)
+{
+
+	int XOR=0;
+	for(int i=0;i<nums.size();i++)
+	{
+		XOR=XOR^nums[i];
+	}
+	return XOR;
+}
+int main()
+{
+    int arr[]={5,1,2,5,1,2,9};
+	vector<int> nums(arr,arr+sizeof(arr)/sizeof(arr[0]));
+	int result;
+	result=single_number(nums);
+	cout<<result;
+	return 0;
+}
