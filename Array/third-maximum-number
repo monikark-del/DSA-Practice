@@ -1,0 +1,24 @@
+#include<bits/stdc++.h>
+using namespace std;
+int third_max(vector<int> &num)
+{
+    set<int> s;
+    for(int i=0;i<num.size();i++)
+    {
+        s.insert(num[i]);
+
+    if(s.size()>3) {      //1,2,3,4,5
+        s.erase(s.begin());}}
+    if(s.size()<3)       //4,5
+        return *s.rbegin();
+    return *s.begin();
+
+}
+int main()
+{
+    int a[]={4,5};
+    vector<int> n(a,a+sizeof(a)/sizeof(a[0]));
+    int result=third_max(n);
+    cout<<"third maximum number is:"<<result;
+    return 0;
+}
