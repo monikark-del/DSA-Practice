@@ -1,0 +1,20 @@
+#include<iostream>
+using namespace std;
+int main()
+{
+    string s;
+    cout<<"enter a string:";
+    getline(cin,s);
+    int length=0;
+    int size_of_s=s.size()-1;
+    while(size_of_s >=0 && s[size_of_s]==' ')
+    {
+        size_of_s--;
+    }
+    while(size_of_s >=0 && s[size_of_s]!=' ')
+    {
+        length++;
+        size_of_s--;
+    }
+    cout<<"length of last word is :"<<length;
+}
