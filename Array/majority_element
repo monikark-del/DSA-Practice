@@ -1,0 +1,47 @@
+#include<iostream>
+using namespace std;
+int majority_element(int a[],int n)
+{
+   int count=0;
+   int element;
+   for(int i=0;i<n;i++)
+   {
+       if(count==0)
+       {
+           count++;
+           element=a[i];
+       }
+       else if(a[i]==element)
+       {
+           count++;
+       }
+       else
+        {
+          count--;
+        }
+   }
+   int count1=0;
+   for(int i=0;i<n;i++)
+   {
+
+       if(a[i]==element)
+       {
+           count1++;
+       }
+   }
+   if(count1>(n/2))
+   {
+
+       return element;
+   }
+   return -1;
+
+}
+int main()
+{
+    int a[]={2,2,1,1,1,1,2,2,1,2,2,2};
+    int n=sizeof(a)/sizeof(a[0]);
+    int result=majority_element(a,n);
+    cout<<"majority element is:"<<result;
+    return 0;
+}
