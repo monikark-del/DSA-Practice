@@ -1,0 +1,19 @@
+#include<iostream>
+using namespace std;
+int main()
+{
+    int num_of_rows;
+    cout<<"enter number of rows:";
+    cin>>num_of_rows;
+    int row[num_of_rows+1];
+    long long value=1;
+    for(int j=0;j<=num_of_rows;j++)
+    {
+        row[j]=value;
+        value=value*(num_of_rows-j)/(j+1);
+    }
+    for(int j=0;j<=num_of_rows;j++)
+    {
+        cout<<row[j]<<" ";
+    }
+}
