@@ -1,0 +1,41 @@
+/**
+ * Definition for singly-linked list.
+ * struct Node {
+ *     int data;
+ *     Node* next;
+ *     Node(int x) : data(x), next(NULL) {}
+ * };
+ */
+
+class Solution {
+public:
+    Node* deleteNodes(Node* head, int M, int N) {
+        Node* curr = head;
+
+        while (curr) {
+            // Step 1: Skip M nodes
+            for (int i = 1; i < M && curr != NULL; i++) {
+                curr = curr->next;
+            }
+
+            if (curr == NULL)
+                break;
+
+            // Step 2: Delete N nodes
+            Node* temp = curr->next;
+            for (int i = 0; i < N && temp != NULL; i++) {
+                Node* del = temp;
+                temp = temp->next;
+                delete del;
+            }
+
+            // Step 3: Connect remaining list
+            curr->next = temp;
+
+            // Move curr to next position
+            curr = temp;
+        }
+
+        return head;
+    }
+};
