@@ -1,0 +1,18 @@
+#include <stack>
+#include <string>
+using namespace std;
+
+int minOperations(string s, string t) {
+    stack<char> st1, st2;
+
+    for(char c : s) st1.push(c);
+    for(char c : t) st2.push(c);
+
+    // Remove common suffix
+    while(!st1.empty() && !st2.empty() && st1.top() == st2.top()) {
+        st1.pop();
+        st2.pop();
+    }
+
+    return st1.size() + st2.size();
+}
