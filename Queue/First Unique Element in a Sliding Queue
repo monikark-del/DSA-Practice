@@ -1,0 +1,22 @@
+#include <queue>
+#include <unordered_map>
+#include <vector>
+using namespace std;
+
+vector<int> firstUnique(vector<int>& arr) {
+    queue<int> q;
+    unordered_map<int, int> freq;
+    vector<int> result;
+
+    for (int x : arr) {
+        freq[x]++;
+        q.push(x);
+
+        while (!q.empty() && freq[q.front()] > 1) {
+            q.pop();
+        }
+
+        result.push_back(q.empty() ? -1 : q.front());
+    }
+    return result;
+}
