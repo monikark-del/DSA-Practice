@@ -1,0 +1,38 @@
+struct ListNode {
+    int val;
+    ListNode* next;
+    ListNode(int x) : val(x), next(nullptr) {}
+};
+
+ListNode* reverseBetweenX(ListNode* head, int x) {
+    ListNode* curr = head;
+    ListNode* firstX = nullptr;
+
+    while (curr) {
+        if (curr->val == x) {
+            if (!firstX) {
+                firstX = curr;
+            } else {
+                // Reverse between firstX and curr
+                ListNode* prev = curr;
+                ListNode* node = firstX->next;
+
+                while (node != curr) {
+                    ListNode* nextNode = node->next;
+                    node->next = prev;
+                    prev = node;
+                    node = nextNode;
+                }
+
+                // Fix connections
+                ListNode* temp = firstX->next;
+                firstX->next = prev;
+                temp->next = curr;
+
+                firstX = curr;
+            }
+        }
+        curr = curr->next;
+    }
+    return head;
+}
