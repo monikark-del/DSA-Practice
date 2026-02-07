@@ -1,0 +1,27 @@
+#include <queue>
+#include <vector>
+using namespace std;
+
+int maxWaitingTime(vector<int>& cars) {
+    queue<int> q;
+    int currentTime = 0;
+    int maxWait = 0;
+
+    for (int time : cars) {
+        q.push(time);
+    }
+
+    while (!q.empty()) {
+        int arrival = q.front();
+        q.pop();
+
+        if (currentTime < arrival) {
+            currentTime = arrival;
+        }
+
+        maxWait = max(maxWait, currentTime - arrival);
+        currentTime++; // car passes in 1 second
+    }
+
+    return maxWait;
+}
