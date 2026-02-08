@@ -1,0 +1,29 @@
+#include <queue>
+#include <vector>
+using namespace std;
+
+int maxWaitingTime(vector<int>& arrival, vector<int>& service) {
+    queue<pair<int,int>> q;
+    int currentTime = 0;
+    int maxWait = 0;
+
+    for (int i = 0; i < arrival.size(); i++) {
+        q.push({arrival[i], service[i]});
+    }
+
+    while (!q.empty()) {
+        auto customer = q.front();
+        q.pop();
+
+        if (currentTime < customer.first) {
+            currentTime = customer.first;
+        }
+
+        int wait = currentTime - customer.first;
+        maxWait = max(maxWait, wait);
+
+        currentTime += customer.second;
+    }
+
+    return maxWait;
+}
