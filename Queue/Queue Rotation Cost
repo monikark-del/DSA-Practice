@@ -1,0 +1,17 @@
+#include <queue>
+#include <vector>
+using namespace std;
+
+int minRotationCost(vector<int>& q) {
+    int minVal = q[0];
+    int minIndex = 0;
+
+    for (int i = 1; i < q.size(); i++) {
+        if (q[i] < minVal) {
+            minVal = q[i];
+            minIndex = i;
+        }
+    }
+
+    return minIndex;
+}
