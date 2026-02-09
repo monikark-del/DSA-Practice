@@ -1,0 +1,24 @@
+#include <stack>
+#include <vector>
+using namespace std;
+
+int minStackRebuildOps(vector<int>& start, vector<int>& target) {
+    stack<int> st;
+    int pops = 0;
+    int j = 0;
+
+    for (int x : start) {
+        st.push(x);
+
+        while (!st.empty() && j < target.size() && st.top() != target[j]) {
+            st.pop();
+            pops++;
+        }
+
+        if (!st.empty() && j < target.size() && st.top() == target[j]) {
+            j++;
+        }
+    }
+
+    return pops;
+}
