@@ -1,0 +1,27 @@
+struct ListNode {
+    int val;
+    ListNode* next;
+    ListNode(int x) : val(x), next(nullptr) {}
+};
+
+ListNode* compressList(ListNode* head) {
+    if (!head) return nullptr;
+
+    ListNode* curr = head;
+
+    while (curr) {
+        int count = 1;
+        ListNode* temp = curr->next;
+
+        while (temp && temp->val == curr->val) {
+            count++;
+            temp = temp->next;
+        }
+
+        curr->val = curr->val * count;
+        curr->next = temp;
+        curr = temp;
+    }
+
+    return head;
+}
