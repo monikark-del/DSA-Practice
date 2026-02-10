@@ -1,0 +1,17 @@
+#include <stack>
+#include <string>
+using namespace std;
+
+int longestValidSuffix(string s) {
+    stack<char> st;
+
+    for (char c : s) {
+        if (!st.empty() && st.top() == c) {
+            st.pop();   // cancel pair
+        } else {
+            st.push(c);
+        }
+    }
+
+    return st.size();
+}
