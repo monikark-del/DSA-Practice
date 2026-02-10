@@ -1,0 +1,14 @@
+#include <vector>
+using namespace std;
+
+int minPrefixRemoval(vector<int>& arr) {
+    int n = arr.size();
+    int start = n - 1;
+
+    // Find longest non-decreasing suffix
+    while (start > 0 && arr[start - 1] <= arr[start]) {
+        start--;
+    }
+
+    return start;
+}
