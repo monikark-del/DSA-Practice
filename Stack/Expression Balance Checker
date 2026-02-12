@@ -1,0 +1,87 @@
+#include <iostream>
+using namespace std;
+
+#define MAX 100
+
+class Stack {
+private:
+    char arr[MAX];
+    int top;
+
+public:
+    Stack() {
+        top = -1;
+    }
+
+    bool isEmpty() {
+        return (top == -1);
+    }
+
+    bool isFull() {
+        return (top == MAX - 1);
+    }
+
+    void push(char ch) {
+        if (isFull()) {
+            cout << "Stack Overflow!\n";
+            return;
+        }
+        arr[++top] = ch;
+    }
+
+    char pop() {
+        if (isEmpty()) {
+            return '\0';
+        }
+        return arr[top--];
+    }
+
+    char peek() {
+        if (!isEmpty())
+            return arr[top];
+        return '\0';
+    }
+};
+
+bool isMatchingPair(char open, char close) {
+    if (open == '(' && close == ')') return true;
+    if (open == '{' && close == '}') return true;
+    if (open == '[' && close == ']') return true;
+    return false;
+}
+
+bool areBalanced(string expr) {
+    Stack s;
+
+    for (int i = 0; i < expr.length(); i++) {
+        char ch = expr[i];
+
+        if (ch == '(' || ch == '{' || ch == '[') {
+            s.push(ch);
+        }
+        else if (ch == ')' || ch == '}' || ch == ']') {
+            if (s.isEmpty())
+                return false;
+
+            char top = s.pop();
+            if (!isMatchingPair(top, ch))
+                return false;
+        }
+    }
+
+    return s.isEmpty();
+}
+
+int main() {
+    string expression;
+
+    cout << "Enter expression: ";
+    cin >> expression;
+
+    if (areBalanced(expression))
+        cout << "Expression is Balanced ✅\n";
+    else
+        cout << "Expression is NOT Balanced ❌\n";
+
+    return 0;
+}
