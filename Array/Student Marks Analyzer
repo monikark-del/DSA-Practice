@@ -1,0 +1,60 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+
+    cout << "Enter number of students: ";
+    cin >> n;
+
+    int marks[n];
+    int sum = 0, highest, lowest;
+    int passCount = 0, failCount = 0;
+
+    cout << "Enter marks:\n";
+    for (int i = 0; i < n; i++) {
+        cin >> marks[i];
+        sum += marks[i];
+
+        if (i == 0) {
+            highest = lowest = marks[i];
+        } else {
+            if (marks[i] > highest)
+                highest = marks[i];
+            if (marks[i] < lowest)
+                lowest = marks[i];
+        }
+
+        if (marks[i] >= 40)
+            passCount++;
+        else
+            failCount++;
+    }
+
+    double average = (double)sum / n;
+
+    cout << "\n--- Result Analysis ---\n";
+    cout << "Highest Marks: " << highest << endl;
+    cout << "Lowest Marks: " << lowest << endl;
+    cout << "Average Marks: " << average << endl;
+    cout << "Passed Students: " << passCount << endl;
+    cout << "Failed Students: " << failCount << endl;
+
+    cout << "\nGrades:\n";
+    for (int i = 0; i < n; i++) {
+        cout << "Student " << i + 1 << ": ";
+        
+        if (marks[i] >= 90)
+            cout << "A\n";
+        else if (marks[i] >= 75)
+            cout << "B\n";
+        else if (marks[i] >= 60)
+            cout << "C\n";
+        else if (marks[i] >= 40)
+            cout << "D\n";
+        else
+            cout << "F\n";
+    }
+
+    return 0;
+}
