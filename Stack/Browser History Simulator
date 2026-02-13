@@ -1,0 +1,101 @@
+#include <iostream>
+using namespace std;
+
+#define MAX 100
+
+class Stack {
+private:
+    string arr[MAX];
+    int top;
+
+public:
+    Stack() {
+        top = -1;
+    }
+
+    bool isEmpty() {
+        return (top == -1);
+    }
+
+    bool isFull() {
+        return (top == MAX - 1);
+    }
+
+    void push(string value) {
+        if (!isFull())
+            arr[++top] = value;
+    }
+
+    string pop() {
+        if (!isEmpty())
+            return arr[top--];
+        return "";
+    }
+
+    string peek() {
+        if (!isEmpty())
+            return arr[top];
+        return "";
+    }
+};
+
+int main() {
+    Stack backStack, forwardStack;
+    string currentPage = "Home";
+    int choice;
+    string newPage;
+
+    do {
+        cout << "\n--- Browser History ---\n";
+        cout << "Current Page: " << currentPage << endl;
+        cout << "1. Visit New Page\n";
+        cout << "2. Go Back\n";
+        cout << "3. Go Forward\n";
+        cout << "0. Exit\n";
+        cout << "Enter choice: ";
+        cin >> choice;
+
+        switch (choice) {
+        case 1:
+            cout << "Enter page name: ";
+            cin >> newPage;
+
+            backStack.push(currentPage);
+            currentPage = newPage;
+
+            // Clear forward stack
+            while (!forwardStack.isEmpty())
+                forwardStack.pop();
+
+            break;
+
+        case 2:
+            if (!backStack.isEmpty()) {
+                forwardStack.push(currentPage);
+                currentPage = backStack.pop();
+            } else {
+                cout << "No pages to go back!\n";
+            }
+            break;
+
+        case 3:
+            if (!forwardStack.isEmpty()) {
+                backStack.push(currentPage);
+                currentPage = forwardStack.pop();
+            } else {
+                cout << "No pages to go forward!\n";
+            }
+            break;
+
+        case 0:
+            cout << "Exiting...\n";
+            break;
+
+        default:
+            cout << "Invalid choice!\n";
+        }
+
+    } while (choice != 0);
+
+    return 0;
+}
