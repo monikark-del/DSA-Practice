@@ -1,0 +1,137 @@
+#include <iostream>
+using namespace std;
+
+#define MAX 100
+
+class PrintQueue {
+private:
+    string document[MAX];
+    int pages[MAX];
+    int front, rear;
+
+public:
+    PrintQueue() {
+        front = -1;
+        rear = -1;
+    }
+
+    bool isEmpty() {
+        return (front == -1 || front > rear);
+    }
+
+    bool isFull() {
+        return (rear == MAX - 1);
+    }
+
+    void addJob(string docName, int pageCount) {
+        if (isFull()) {
+            cout << "Print Queue is Full!\n";
+            return;
+        }
+
+        if (front == -1)
+            front = 0;
+
+        rear++;
+        document[rear] = docName;
+        pages[rear] = pageCount;
+
+        cout << "Print job added successfully.\n";
+    }
+
+    void processJob() {
+        if (isEmpty()) {
+            cout << "No jobs in queue!\n";
+            return;
+        }
+
+        cout << "Printing: " << document[front]
+             << " (" << pages[front] << " pages)\n";
+
+        front++;
+    }
+
+    void viewNextJob() {
+        if (isEmpty()) {
+            cout << "No jobs in queue!\n";
+            return;
+        }
+
+        cout << "Next Job: " << document[front]
+             << " (" << pages[front] << " pages)\n";
+    }
+
+    void displayJobs() {
+        if (isEmpty()) {
+            cout << "No jobs in queue!\n";
+            return;
+        }
+
+        cout << "\nPending Print Jobs:\n";
+        for (int i = front; i <= rear; i++) {
+            cout << document[i] << " - "
+                 << pages[i] << " pages\n";
+        }
+    }
+
+    void totalJobs() {
+        if (isEmpty())
+            cout << "Total Jobs: 0\n";
+        else
+            cout << "Total Jobs: " << (rear - front + 1) << endl;
+    }
+};
+
+int main() {
+    PrintQueue pq;
+    int choice, pageCount;
+    string docName;
+
+    do {
+        cout << "\n--- Print Queue System ---\n";
+        cout << "1. Add Print Job\n";
+        cout << "2. Process Print Job\n";
+        cout << "3. View Next Job\n";
+        cout << "4. Display All Jobs\n";
+        cout << "5. Total Pending Jobs\n";
+        cout << "0. Exit\n";
+        cout << "Enter choice: ";
+        cin >> choice;
+
+        switch (choice) {
+        case 1:
+            cout << "Enter document name: ";
+            cin >> docName;
+            cout << "Enter number of pages: ";
+            cin >> pageCount;
+            pq.addJob(docName, pageCount);
+            break;
+
+        case 2:
+            pq.processJob();
+            break;
+
+        case 3:
+            pq.viewNextJob();
+            break;
+
+        case 4:
+            pq.displayJobs();
+            break;
+
+        case 5:
+            pq.totalJobs();
+            break;
+
+        case 0:
+            cout << "Exiting...\n";
+            break;
+
+        default:
+            cout << "Invalid choice!\n";
+        }
+
+    } while (choice != 0);
+
+    return 0;
+}
