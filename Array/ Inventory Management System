@@ -1,0 +1,108 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+
+    cout << "Enter number of products: ";
+    cin >> n;
+
+    string productName[n];
+    int quantity[n];
+
+    for (int i = 0; i < n; i++) {
+        cout << "Enter product name: ";
+        cin >> productName[i];
+        cout << "Enter quantity: ";
+        cin >> quantity[i];
+    }
+
+    int choice;
+    do {
+        cout << "\n--- Inventory Menu ---\n";
+        cout << "1. Add Stock\n";
+        cout << "2. Remove Stock\n";
+        cout << "3. Search Product\n";
+        cout << "4. Display Inventory\n";
+        cout << "5. Highest Stock Product\n";
+        cout << "0. Exit\n";
+        cout << "Enter choice: ";
+        cin >> choice;
+
+        string name;
+        int amount;
+
+        switch (choice) {
+        case 1:
+            cout << "Enter product name: ";
+            cin >> name;
+            cout << "Enter quantity to add: ";
+            cin >> amount;
+
+            for (int i = 0; i < n; i++) {
+                if (productName[i] == name) {
+                    quantity[i] += amount;
+                    cout << "Stock updated!\n";
+                }
+            }
+            break;
+
+        case 2:
+            cout << "Enter product name: ";
+            cin >> name;
+            cout << "Enter quantity to remove: ";
+            cin >> amount;
+
+            for (int i = 0; i < n; i++) {
+                if (productName[i] == name) {
+                    if (quantity[i] >= amount) {
+                        quantity[i] -= amount;
+                        cout << "Stock updated!\n";
+                    } else {
+                        cout << "Not enough stock!\n";
+                    }
+                }
+            }
+            break;
+
+        case 3:
+            cout << "Enter product name: ";
+            cin >> name;
+
+            for (int i = 0; i < n; i++) {
+                if (productName[i] == name) {
+                    cout << "Product found. Quantity: " << quantity[i] << endl;
+                }
+            }
+            break;
+
+        case 4:
+            cout << "\n--- Inventory List ---\n";
+            for (int i = 0; i < n; i++) {
+                cout << productName[i] << " : " << quantity[i] << endl;
+            }
+            break;
+
+        case 5:
+            int maxIndex = 0;
+            for (int i = 1; i < n; i++) {
+                if (quantity[i] > quantity[maxIndex]) {
+                    maxIndex = i;
+                }
+            }
+            cout << "Highest Stock: " << productName[maxIndex]
+                 << " (" << quantity[maxIndex] << ")\n";
+            break;
+
+        case 0:
+            cout << "Exiting...\n";
+            break;
+
+        default:
+            cout << "Invalid choice!\n";
+        }
+
+    } while (choice != 0);
+
+    return 0;
+}
