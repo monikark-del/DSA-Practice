@@ -1,0 +1,135 @@
+#include <iostream>
+using namespace std;
+
+#define MAX 100
+
+struct Customer {
+    int id;
+    string name;
+};
+
+Customer queue[MAX];
+int front = -1, rear = -1;
+
+// Check if queue is full
+bool isFull() {
+    return rear == MAX - 1;
+}
+
+// Check if queue is empty
+bool isEmpty() {
+    return front == -1 || front > rear;
+}
+
+// Add customer (Enqueue)
+void enqueue(int id, string name) {
+    if (isFull()) {
+        cout << "Queue is full! Cannot add more customers.\n";
+        return;
+    }
+
+    if (front == -1)
+        front = 0;
+
+    rear++;
+    queue[rear].id = id;
+    queue[rear].name = name;
+
+    cout << "Customer added to queue successfully!\n";
+}
+
+// Serve customer (Dequeue)
+void dequeue() {
+    if (isEmpty()) {
+        cout << "Queue is empty! No customers to serve.\n";
+        return;
+    }
+
+    cout << "Serving Customer: "
+         << queue[front].id << " - "
+         << queue[front].name << endl;
+
+    front++;
+}
+
+// Display queue
+void displayQueue() {
+    if (isEmpty()) {
+        cout << "Queue is empty.\n";
+        return;
+    }
+
+    cout << "\n--- Customer Queue ---\n";
+    for (int i = front; i <= rear; i++) {
+        cout << "ID: " << queue[i].id
+             << " | Name: " << queue[i].name << endl;
+    }
+}
+
+// View next customer
+void peek() {
+    if (isEmpty()) {
+        cout << "Queue is empty.\n";
+        return;
+    }
+
+    cout << "Next Customer: "
+         << queue[front].id << " - "
+         << queue[front].name << endl;
+}
+
+// Get queue size
+void queueSize() {
+    if (isEmpty()) {
+        cout << "Queue size: 0\n";
+    } else {
+        cout << "Queue size: " << (rear - front + 1) << endl;
+    }
+}
+
+int main() {
+    int choice, id;
+    string name;
+
+    do {
+        cout << "\n===== Ticket Booking Queue Menu =====\n";
+        cout << "1. Add Customer\n";
+        cout << "2. Serve Customer\n";
+        cout << "3. Display Queue\n";
+        cout << "4. View Next Customer\n";
+        cout << "5. Queue Size\n";
+        cout << "6. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                cout << "Enter Customer ID: ";
+                cin >> id;
+                cout << "Enter Customer Name: ";
+                cin >> name;
+                enqueue(id, name);
+                break;
+            case 2:
+                dequeue();
+                break;
+            case 3:
+                displayQueue();
+                break;
+            case 4:
+                peek();
+                break;
+            case 5:
+                queueSize();
+                break;
+            case 6:
+                cout << "Exiting system...\n";
+                break;
+            default:
+                cout << "Invalid choice!\n";
+        }
+
+    } while (choice != 6);
+
+    return 0;
+}
