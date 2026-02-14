@@ -1,0 +1,129 @@
+#include <iostream>
+using namespace std;
+
+const int MAX = 100;
+
+struct Student {
+    int rollNo;
+    string name;
+    float marks;
+};
+
+Student students[MAX];
+int countStudents = 0;
+
+// Function to add student
+void addStudent() {
+    if (countStudents >= MAX) {
+        cout << "Student limit reached!\n";
+        return;
+    }
+
+    cout << "\nEnter Roll No: ";
+    cin >> students[countStudents].rollNo;
+
+    cout << "Enter Name: ";
+    cin >> students[countStudents].name;
+
+    cout << "Enter Marks: ";
+    cin >> students[countStudents].marks;
+
+    countStudents++;
+    cout << "Student added successfully!\n";
+}
+
+// Function to display students
+void displayStudents() {
+    if (countStudents == 0) {
+        cout << "No records found!\n";
+        return;
+    }
+
+    cout << "\n--- Student Records ---\n";
+    for (int i = 0; i < countStudents; i++) {
+        cout << "Roll No: " << students[i].rollNo
+             << ", Name: " << students[i].name
+             << ", Marks: " << students[i].marks << endl;
+    }
+}
+
+// Function to search student
+void searchStudent() {
+    int roll;
+    cout << "\nEnter Roll No to search: ";
+    cin >> roll;
+
+    for (int i = 0; i < countStudents; i++) {
+        if (students[i].rollNo == roll) {
+            cout << "Student Found!\n";
+            cout << "Name: " << students[i].name
+                 << ", Marks: " << students[i].marks << endl;
+            return;
+        }
+    }
+    cout << "Student not found!\n";
+}
+
+// Function to find topper
+void findTopper() {
+    if (countStudents == 0) {
+        cout << "No records available!\n";
+        return;
+    }
+
+    int topIndex = 0;
+    for (int i = 1; i < countStudents; i++) {
+        if (students[i].marks > students[topIndex].marks) {
+            topIndex = i;
+        }
+    }
+
+    cout << "\nTopper Details:\n";
+    cout << "Roll No: " << students[topIndex].rollNo
+         << ", Name: " << students[topIndex].name
+         << ", Marks: " << students[topIndex].marks << endl;
+}
+
+// Function to calculate average
+void calculateAverage() {
+    if (countStudents == 0) {
+        cout << "No records available!\n";
+        return;
+    }
+
+    float sum = 0;
+    for (int i = 0; i < countStudents; i++) {
+        sum += students[i].marks;
+    }
+
+    cout << "Class Average: " << (sum / countStudents) << endl;
+}
+
+int main() {
+    int choice;
+
+    do {
+        cout << "\n===== Student Record Menu =====\n";
+        cout << "1. Add Student\n";
+        cout << "2. Display Students\n";
+        cout << "3. Search Student\n";
+        cout << "4. Find Topper\n";
+        cout << "5. Class Average\n";
+        cout << "6. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1: addStudent(); break;
+            case 2: displayStudents(); break;
+            case 3: searchStudent(); break;
+            case 4: findTopper(); break;
+            case 5: calculateAverage(); break;
+            case 6: cout << "Exiting program...\n"; break;
+            default: cout << "Invalid choice!\n";
+        }
+
+    } while (choice != 6);
+
+    return 0;
+}
