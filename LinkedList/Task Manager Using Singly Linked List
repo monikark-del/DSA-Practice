@@ -1,0 +1,163 @@
+#include <iostream>
+using namespace std;
+
+struct Task {
+    int id;
+    string title;
+    bool completed;
+    Task* next;
+};
+
+Task* head = NULL;
+
+// Add task at end
+void addTask(int id, string title) {
+    Task* newTask = new Task;
+    newTask->id = id;
+    newTask->title = title;
+    newTask->completed = false;
+    newTask->next = NULL;
+
+    if (head == NULL) {
+        head = newTask;
+    } else {
+        Task* temp = head;
+        while (temp->next != NULL) {
+            temp = temp->next;
+        }
+        temp->next = newTask;
+    }
+
+    cout << "Task added successfully!\n";
+}
+
+// Display tasks
+void displayTasks() {
+    if (head == NULL) {
+        cout << "No tasks available.\n";
+        return;
+    }
+
+    Task* temp = head;
+    cout << "\n--- Task List ---\n";
+    while (temp != NULL) {
+        cout << "ID: " << temp->id
+             << " | Title: " << temp->title
+             << " | Status: "
+             << (temp->completed ? "Completed" : "Pending") 
+             << endl;
+        temp = temp->next;
+    }
+}
+
+// Delete task by ID
+void deleteTask(int id) {
+    if (head == NULL) {
+        cout << "List is empty.\n";
+        return;
+    }
+
+    Task* temp = head;
+    Task* prev = NULL;
+
+    if (temp->id == id) {
+        head = temp->next;
+        delete temp;
+        cout << "Task deleted.\n";
+        return;
+    }
+
+    while (temp != NULL && temp->id != id) {
+        prev = temp;
+        temp = temp->next;
+    }
+
+    if (temp == NULL) {
+        cout << "Task not found.\n";
+        return;
+    }
+
+    prev->next = temp->next;
+    delete temp;
+    cout << "Task deleted.\n";
+}
+
+// Mark task as completed
+void markCompleted(int id) {
+    Task* temp = head;
+
+    while (temp != NULL) {
+        if (temp->id == id) {
+            temp->completed = true;
+            cout << "Task marked as completed.\n";
+            return;
+        }
+        temp = temp->next;
+    }
+
+    cout << "Task not found.\n";
+}
+
+// Count total tasks
+void countTasks() {
+    int count = 0;
+    Task* temp = head;
+
+    while (temp != NULL) {
+        count++;
+        temp = temp->next;
+    }
+
+    cout << "Total Tasks: " << count << endl;
+}
+
+int main() {
+    int choice, id;
+    string title;
+
+    do {
+        cout << "\n===== Task Manager Menu =====\n";
+        cout << "1. Add Task\n";
+        cout << "2. Display Tasks\n";
+        cout << "3. Delete Task\n";
+        cout << "4. Mark Task Completed\n";
+        cout << "5. Count Tasks\n";
+        cout << "6. Exit\n";
+        cout << "Enter choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                cout << "Enter Task ID: ";
+                cin >> id;
+                cout << "Enter Task Title: ";
+                cin >> title;
+                addTask(id, title);
+                break;
+            case 2:
+                displayTasks();
+                break;
+            case 3:
+                cout << "Enter Task ID to delete: ";
+                cin >> id;
+                deleteTask(id);
+                break;
+            case 4:
+                cout << "Enter Task ID to mark completed: ";
+                cin >> id;
+                markCompleted(id);
+                break;
+            case 5:
+                countTasks();
+                break;
+            case 6:
+                cout << "Exiting...\n";
+                break;
+            default:
+                cout << "Invalid choice!\n";
+        }
+
+    } while (choice != 6);
+
+    return 0;
+}
