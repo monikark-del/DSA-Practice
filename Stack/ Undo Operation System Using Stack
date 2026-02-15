@@ -1,0 +1,112 @@
+#include <iostream>
+using namespace std;
+
+const int MAX = 10;
+
+class Stack {
+private:
+    string arr[MAX];
+    int top;
+
+public:
+    Stack() {
+        top = -1;
+    }
+
+    bool isEmpty() {
+        return (top == -1);
+    }
+
+    bool isFull() {
+        return (top == MAX - 1);
+    }
+
+    void push(string action) {
+        if (isFull()) {
+            cout << "Stack Overflow! Cannot add more actions.\n";
+            return;
+        }
+
+        arr[++top] = action;
+        cout << "Action Added Successfully!\n";
+    }
+
+    void pop() {
+        if (isEmpty()) {
+            cout << "Stack Underflow! No actions to undo.\n";
+            return;
+        }
+
+        cout << "Undo Action: " << arr[top--] << endl;
+    }
+
+    void peek() {
+        if (isEmpty()) {
+            cout << "No recent action available.\n";
+            return;
+        }
+
+        cout << "Last Action: " << arr[top] << endl;
+    }
+
+    void display() {
+        if (isEmpty()) {
+            cout << "No actions performed yet.\n";
+            return;
+        }
+
+        cout << "All Actions (Top to Bottom):\n";
+        for (int i = top; i >= 0; i--) {
+            cout << arr[i] << endl;
+        }
+    }
+};
+
+int main() {
+    Stack s;
+    int choice;
+    string action;
+
+    do {
+        cout << "\n\n===== Undo System (Stack) =====\n";
+        cout << "1. Add Action\n";
+        cout << "2. Undo Action\n";
+        cout << "3. View Last Action\n";
+        cout << "4. Display All Actions\n";
+        cout << "5. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        cin.ignore();  // To handle string input properly
+
+        switch (choice) {
+            case 1:
+                cout << "Enter Action Description: ";
+                getline(cin, action);
+                s.push(action);
+                break;
+
+            case 2:
+                s.pop();
+                break;
+
+            case 3:
+                s.peek();
+                break;
+
+            case 4:
+                s.display();
+                break;
+
+            case 5:
+                cout << "Exiting Program...\n";
+                break;
+
+            default:
+                cout << "Invalid Choice!\n";
+        }
+
+    } while (choice != 5);
+
+    return 0;
+}
