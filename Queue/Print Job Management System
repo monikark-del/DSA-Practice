@@ -1,0 +1,153 @@
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    int jobID;
+    string fileName;
+    Node* next;
+
+    Node(int id, string name) {
+        jobID = id;
+        fileName = name;
+        next = NULL;
+    }
+};
+
+class PrintQueue {
+private:
+    Node* front;
+    Node* rear;
+
+public:
+    PrintQueue() {
+        front = rear = NULL;
+    }
+
+    bool isEmpty() {
+        return (front == NULL);
+    }
+
+    void enqueue(int id, string name) {
+        Node* newNode = new Node(id, name);
+
+        if (isEmpty()) {
+            front = rear = newNode;
+        } else {
+            rear->next = newNode;
+            rear = newNode;
+        }
+
+        cout << "Print Job Added Successfully!\n";
+    }
+
+    void dequeue() {
+        if (isEmpty()) {
+            cout << "No Print Jobs in Queue!\n";
+            return;
+        }
+
+        Node* temp = front;
+        cout << "Processing Job ID: " << temp->jobID 
+             << " | File: " << temp->fileName << endl;
+
+        front = front->next;
+
+        if (front == NULL)
+            rear = NULL;
+
+        delete temp;
+    }
+
+    void peek() {
+        if (isEmpty()) {
+            cout << "Queue is Empty!\n";
+            return;
+        }
+
+        cout << "Next Job -> ID: " << front->jobID 
+             << " | File: " << front->fileName << endl;
+    }
+
+    void countJobs() {
+        Node* temp = front;
+        int count = 0;
+
+        while (temp != NULL) {
+            count++;
+            temp = temp->next;
+        }
+
+        cout << "Total Pending Jobs: " << count << endl;
+    }
+
+    void display() {
+        if (isEmpty()) {
+            cout << "Queue is Empty!\n";
+            return;
+        }
+
+        Node* temp = front;
+        cout << "Print Queue:\n";
+
+        while (temp != NULL) {
+            cout << "Job ID: " << temp->jobID 
+                 << " | File: " << temp->fileName << endl;
+            temp = temp->next;
+        }
+    }
+};
+
+int main() {
+    PrintQueue pq;
+    int choice, id;
+    string name;
+
+    do {
+        cout << "\n\n===== Print Job Queue System =====\n";
+        cout << "1. Add Print Job\n";
+        cout << "2. Process Print Job\n";
+        cout << "3. View Next Job\n";
+        cout << "4. Count Jobs\n";
+        cout << "5. Display All Jobs\n";
+        cout << "6. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                cout << "Enter Job ID: ";
+                cin >> id;
+                cout << "Enter File Name: ";
+                cin >> name;
+                pq.enqueue(id, name);
+                break;
+
+            case 2:
+                pq.dequeue();
+                break;
+
+            case 3:
+                pq.peek();
+                break;
+
+            case 4:
+                pq.countJobs();
+                break;
+
+            case 5:
+                pq.display();
+                break;
+
+            case 6:
+                cout << "Exiting Program...\n";
+                break;
+
+            default:
+                cout << "Invalid Choice!\n";
+        }
+
+    } while (choice != 6);
+
+    return 0;
+}
