@@ -1,0 +1,161 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Song {
+    int id;
+    string title;
+    Song* next;
+};
+
+Song* head = NULL;
+Song* current = NULL;
+
+// Add Song
+void addSong() {
+    Song* newSong = new Song;
+
+    cout << "\nEnter Song ID: ";
+    cin >> newSong->id;
+    cin.ignore();
+
+    cout << "Enter Song Title: ";
+    getline(cin, newSong->title);
+
+    if (head == NULL) {
+        head = newSong;
+        newSong->next = head;
+        current = head;
+    } else {
+        Song* temp = head;
+        while (temp->next != head) {
+            temp = temp->next;
+        }
+        temp->next = newSong;
+        newSong->next = head;
+    }
+
+    cout << "Song Added Successfully!\n";
+}
+
+// Play Current Song
+void playCurrent() {
+    if (current == NULL) {
+        cout << "Playlist is empty!\n";
+        return;
+    }
+
+    cout << "Now Playing: " << current->title << endl;
+}
+
+// Play Next Song
+void playNext() {
+    if (current == NULL) {
+        cout << "Playlist is empty!\n";
+        return;
+    }
+
+    current = current->next;
+    cout << "Now Playing: " << current->title << endl;
+}
+
+// Delete Song
+void deleteSong() {
+    if (head == NULL) {
+        cout << "Playlist is empty!\n";
+        return;
+    }
+
+    int deleteId;
+    cout << "Enter Song ID to Delete: ";
+    cin >> deleteId;
+
+    Song *temp = head, *prev = NULL;
+
+    // If head is to be deleted
+    if (head->id == deleteId) {
+        if (head->next == head) {
+            delete head;
+            head = NULL;
+            current = NULL;
+        } else {
+            Song* last = head;
+            while (last->next != head)
+                last = last->next;
+
+            Song* toDelete = head;
+            head = head->next;
+            last->next = head;
+            if (current == toDelete)
+                current = head;
+            delete toDelete;
+        }
+        cout << "Song Deleted!\n";
+        return;
+    }
+
+    // Delete other nodes
+    prev = head;
+    temp = head->next;
+    while (temp != head && temp->id != deleteId) {
+        prev = temp;
+        temp = temp->next;
+    }
+
+    if (temp == head) {
+        cout << "Song Not Found!\n";
+        return;
+    }
+
+    prev->next = temp->next;
+    if (current == temp)
+        current = temp->next;
+    delete temp;
+
+    cout << "Song Deleted Successfully!\n";
+}
+
+// Show Playlist
+void showPlaylist() {
+    if (head == NULL) {
+        cout << "Playlist is empty!\n";
+        return;
+    }
+
+    Song* temp = head;
+    cout << "\n--- Playlist ---\n";
+    do {
+        cout << "ID: " << temp->id << " | Title: " << temp->title << endl;
+        temp = temp->next;
+    } while (temp != head);
+}
+
+// Main
+int main() {
+    int choice;
+
+    do {
+        cout << "\n===== Music Playlist Manager =====\n";
+        cout << "1. Add Song\n";
+        cout << "2. Play Current Song\n";
+        cout << "3. Play Next Song\n";
+        cout << "4. Delete Song\n";
+        cout << "5. Show Playlist\n";
+        cout << "6. Exit\n";
+        cout << "Enter Choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1: addSong(); break;
+            case 2: playCurrent(); break;
+            case 3: playNext(); break;
+            case 4: deleteSong(); break;
+            case 5: showPlaylist(); break;
+            case 6: cout << "Exiting...\n"; break;
+            default: cout << "Invalid Choice!\n";
+        }
+
+    } while (choice != 6);
+
+    return 0;
+}
