@@ -1,0 +1,102 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+#define SIZE 5
+
+string queueArr[SIZE];
+int front = -1;
+int rear = -1;
+
+// Check if queue is full
+bool isFull() {
+    return rear == SIZE - 1;
+}
+
+// Check if queue is empty
+bool isEmpty() {
+    return front == -1 || front > rear;
+}
+
+// Add Patient
+void addPatient() {
+    if (isFull()) {
+        cout << "Queue is Full! Please wait.\n";
+        return;
+    }
+
+    string name;
+    cout << "Enter Patient Name: ";
+    cin.ignore();
+    getline(cin, name);
+
+    if (front == -1)
+        front = 0;
+
+    rear++;
+    queueArr[rear] = name;
+
+    cout << "Token Generated for " << name << endl;
+}
+
+// Call Next Patient
+void callPatient() {
+    if (isEmpty()) {
+        cout << "No patients in queue.\n";
+        return;
+    }
+
+    cout << "Calling Patient: " << queueArr[front] << endl;
+    front++;
+}
+
+// View Current Patient
+void currentPatient() {
+    if (isEmpty()) {
+        cout << "No patients waiting.\n";
+        return;
+    }
+
+    cout << "Current Patient: " << queueArr[front] << endl;
+}
+
+// Display Waiting List
+void displayQueue() {
+    if (isEmpty()) {
+        cout << "Queue is empty.\n";
+        return;
+    }
+
+    cout << "\n--- Waiting List ---\n";
+    for (int i = front; i <= rear; i++) {
+        cout << queueArr[i] << endl;
+    }
+}
+
+// Main
+int main() {
+    int choice;
+
+    do {
+        cout << "\n===== Hospital Token System =====\n";
+        cout << "1. Add Patient\n";
+        cout << "2. Call Next Patient\n";
+        cout << "3. View Current Patient\n";
+        cout << "4. Display Waiting List\n";
+        cout << "5. Exit\n";
+        cout << "Enter Choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1: addPatient(); break;
+            case 2: callPatient(); break;
+            case 3: currentPatient(); break;
+            case 4: displayQueue(); break;
+            case 5: cout << "Exiting...\n"; break;
+            default: cout << "Invalid Choice!\n";
+        }
+
+    } while (choice != 5);
+
+    return 0;
+}
