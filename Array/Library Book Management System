@@ -1,0 +1,122 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+#define MAX 100
+
+struct Book {
+    int id;
+    string title;
+    string author;
+    bool isAvailable;
+};
+
+Book library[MAX];
+int totalBooks = 0;
+
+// Add Book
+void addBook() {
+    if (totalBooks >= MAX) {
+        cout << "Library is Full!\n";
+        return;
+    }
+
+    cout << "\nEnter Book ID: ";
+    cin >> library[totalBooks].id;
+    cin.ignore();
+
+    cout << "Enter Book Title: ";
+    getline(cin, library[totalBooks].title);
+
+    cout << "Enter Author Name: ";
+    getline(cin, library[totalBooks].author);
+
+    library[totalBooks].isAvailable = true;
+    totalBooks++;
+
+    cout << "Book Added Successfully!\n";
+}
+
+// Display Books
+void displayBooks() {
+    if (totalBooks == 0) {
+        cout << "No Books in Library!\n";
+        return;
+    }
+
+    cout << "\n--- Library Books ---\n";
+    for (int i = 0; i < totalBooks; i++) {
+        cout << "\nBook ID: " << library[i].id;
+        cout << "\nTitle: " << library[i].title;
+        cout << "\nAuthor: " << library[i].author;
+        cout << "\nStatus: " << (library[i].isAvailable ? "Available" : "Not Available");
+        cout << "\n----------------------";
+    }
+}
+
+// Search Book
+void searchBook() {
+    int searchId;
+    cout << "\nEnter Book ID to Search: ";
+    cin >> searchId;
+
+    for (int i = 0; i < totalBooks; i++) {
+        if (library[i].id == searchId) {
+            cout << "\nBook Found!\n";
+            cout << "Title: " << library[i].title << endl;
+            cout << "Author: " << library[i].author << endl;
+            cout << "Status: " << (library[i].isAvailable ? "Available" : "Not Available") << endl;
+            return;
+        }
+    }
+
+    cout << "Book Not Found!\n";
+}
+
+// Delete Book
+void deleteBook() {
+    int deleteId;
+    cout << "\nEnter Book ID to Delete: ";
+    cin >> deleteId;
+
+    for (int i = 0; i < totalBooks; i++) {
+        if (library[i].id == deleteId) {
+            for (int j = i; j < totalBooks - 1; j++) {
+                library[j] = library[j + 1];
+            }
+            totalBooks--;
+            cout << "Book Deleted Successfully!\n";
+            return;
+        }
+    }
+
+    cout << "Book Not Found!\n";
+}
+
+// Main Function
+int main() {
+    int choice;
+
+    do {
+        cout << "\n===== Library Management System =====\n";
+        cout << "1. Add Book\n";
+        cout << "2. Display Books\n";
+        cout << "3. Search Book\n";
+        cout << "4. Delete Book\n";
+        cout << "5. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1: addBook(); break;
+            case 2: displayBooks(); break;
+            case 3: searchBook(); break;
+            case 4: deleteBook(); break;
+            case 5: cout << "Exiting Program...\n"; break;
+            default: cout << "Invalid Choice!\n";
+        }
+
+    } while (choice != 5);
+
+    return 0;
+}
