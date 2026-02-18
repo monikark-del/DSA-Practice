@@ -1,0 +1,115 @@
+#include <iostream>
+using namespace std;
+
+#define SIZE 5
+
+class OrderQueue {
+private:
+    string orders[SIZE];
+    int front, rear;
+
+public:
+    OrderQueue() {
+        front = -1;
+        rear = -1;
+    }
+
+    bool isEmpty() {
+        return (front == -1 || front > rear);
+    }
+
+    bool isFull() {
+        return (rear == SIZE - 1);
+    }
+
+    void placeOrder(string order) {
+        if(isFull()) {
+            cout << "Order Queue is Full! Cannot place more orders.\n";
+            return;
+        }
+
+        if(front == -1)
+            front = 0;
+
+        orders[++rear] = order;
+        cout << "Order Placed: " << order << endl;
+    }
+
+    void processOrder() {
+        if(isEmpty()) {
+            cout << "No Orders to Process!\n";
+            return;
+        }
+
+        cout << "Processing Order: " << orders[front] << endl;
+        front++;
+    }
+
+    void viewNextOrder() {
+        if(isEmpty()) {
+            cout << "No Pending Orders!\n";
+            return;
+        }
+
+        cout << "Next Order: " << orders[front] << endl;
+    }
+
+    void displayOrders() {
+        if(isEmpty()) {
+            cout << "No Pending Orders!\n";
+            return;
+        }
+
+        cout << "\n--- Pending Orders ---\n";
+        for(int i = front; i <= rear; i++) {
+            cout << orders[i] << endl;
+        }
+    }
+};
+
+int main() {
+    OrderQueue q;
+    int choice;
+    string order;
+
+    do {
+        cout << "\n1. Place Order";
+        cout << "\n2. Process Order";
+        cout << "\n3. View Next Order";
+        cout << "\n4. Display All Orders";
+        cout << "\n5. Exit";
+        cout << "\nEnter choice: ";
+        cin >> choice;
+        cin.ignore();
+
+        switch(choice) {
+            case 1:
+                cout << "Enter Order Name: ";
+                getline(cin, order);
+                q.placeOrder(order);
+                break;
+
+            case 2:
+                q.processOrder();
+                break;
+
+            case 3:
+                q.viewNextOrder();
+                break;
+
+            case 4:
+                q.displayOrders();
+                break;
+
+            case 5:
+                cout << "Exiting System...\n";
+                break;
+
+            default:
+                cout << "Invalid Choice!\n";
+        }
+
+    } while(choice != 5);
+
+    return 0;
+}
