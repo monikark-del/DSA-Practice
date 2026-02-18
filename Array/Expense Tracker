@@ -1,0 +1,49 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    int days;
+
+    cout << "Enter number of days: ";
+    cin >> days;
+
+    float expense[100];
+    float total = 0;
+
+    // Input expenses
+    for(int i = 0; i < days; i++) {
+        cout << "Enter expense for Day " << i + 1 << ": ";
+        cin >> expense[i];
+        total += expense[i];
+    }
+
+    float average = total / days;
+
+    // Find highest expense
+    float highest = expense[0];
+    int highestDay = 1;
+
+    for(int i = 0; i < days; i++) {
+        if(expense[i] > highest) {
+            highest = expense[i];
+            highestDay = i + 1;
+        }
+    }
+
+    // Count days above average
+    int countAboveAvg = 0;
+    for(int i = 0; i < days; i++) {
+        if(expense[i] > average) {
+            countAboveAvg++;
+        }
+    }
+
+    // Display Results
+    cout << "\n----- Expense Summary -----";
+    cout << "\nTotal Expense: ₹" << total;
+    cout << "\nAverage Daily Expense: ₹" << average;
+    cout << "\nHighest Expense: ₹" << highest << " on Day " << highestDay;
+    cout << "\nDays above average spending: " << countAboveAvg;
+
+    return 0;
+}
