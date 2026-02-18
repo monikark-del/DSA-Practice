@@ -1,0 +1,113 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+#define SIZE 10
+
+class CallStack {
+private:
+    string calls[SIZE];
+    int top;
+
+public:
+    CallStack() {
+        top = -1;
+    }
+
+    bool isEmpty() {
+        return top == -1;
+    }
+
+    bool isFull() {
+        return top == SIZE - 1;
+    }
+
+    // Missed call (Push)
+    void missedCall(string number) {
+        if(isFull()) {
+            cout << "Call stack full! Cannot store more missed calls.\n";
+            return;
+        }
+        calls[++top] = number;
+        cout << "Missed call from: " << number << endl;
+    }
+
+    // Call back (Pop)
+    void callBack() {
+        if(isEmpty()) {
+            cout << "No missed calls to call back!\n";
+            return;
+        }
+        cout << "Calling back: " << calls[top] << endl;
+        top--;
+    }
+
+    // View latest missed call
+    void latestCall() {
+        if(isEmpty()) {
+            cout << "No missed calls!\n";
+            return;
+        }
+        cout << "Latest missed call: " << calls[top] << endl;
+    }
+
+    // Display all missed calls
+    void displayCalls() {
+        if(isEmpty()) {
+            cout << "No missed calls stored!\n";
+            return;
+        }
+
+        cout << "\n--- Missed Call List (Latest First) ---\n";
+        for(int i = top; i >= 0; i--) {
+            cout << calls[i] << endl;
+        }
+    }
+};
+
+int main() {
+    CallStack cs;
+    int choice;
+    string number;
+
+    do {
+        cout << "\n1. Missed Call";
+        cout << "\n2. Call Back Last Missed Call";
+        cout << "\n3. View Latest Missed Call";
+        cout << "\n4. Display All Missed Calls";
+        cout << "\n5. Exit";
+        cout << "\nEnter choice: ";
+        cin >> choice;
+        cin.ignore();
+
+        switch(choice) {
+            case 1:
+                cout << "Enter Phone Number: ";
+                getline(cin, number);
+                cs.missedCall(number);
+                break;
+
+            case 2:
+                cs.callBack();
+                break;
+
+            case 3:
+                cs.latestCall();
+                break;
+
+            case 4:
+                cs.displayCalls();
+                break;
+
+            case 5:
+                cout << "Exiting Call Tracker...\n";
+                break;
+
+            default:
+                cout << "Invalid choice!\n";
+        }
+
+    } while(choice != 5);
+
+    return 0;
+}
