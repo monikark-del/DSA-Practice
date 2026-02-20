@@ -1,0 +1,92 @@
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int digit;
+    Node* next;
+};
+
+// Insert at beginning (to build number in reverse)
+void insertAtHead(Node*& head, int d) {
+    Node* newNode = new Node();
+    newNode->digit = d;
+    newNode->next = head;
+    head = newNode;
+}
+
+// Display number
+void display(Node* head) {
+    while (head != NULL) {
+        cout << head->digit;
+        head = head->next;
+    }
+    cout << endl;
+}
+
+// Reverse linked list
+Node* reverse(Node* head) {
+    Node* prev = NULL;
+    Node* curr = head;
+    Node* next = NULL;
+
+    while (curr != NULL) {
+        next = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = next;
+    }
+    return prev;
+}
+
+// Add two numbers
+Node* addNumbers(Node* l1, Node* l2) {
+    Node* result = NULL;
+    int carry = 0;
+
+    while (l1 != NULL || l2 != NULL || carry) {
+        int sum = carry;
+
+        if (l1 != NULL) {
+            sum += l1->digit;
+            l1 = l1->next;
+        }
+
+        if (l2 != NULL) {
+            sum += l2->digit;
+            l2 = l2->next;
+        }
+
+        carry = sum / 10;
+        insertAtHead(result, sum % 10);
+    }
+
+    return result;
+}
+
+int main() {
+
+    Node* num1 = NULL;
+    Node* num2 = NULL;
+
+    string n1, n2;
+
+    cout << "Enter first large number: ";
+    cin >> n1;
+
+    cout << "Enter second large number: ";
+    cin >> n2;
+
+    // Store digits in reverse order
+    for (int i = 0; i < n1.length(); i++)
+        insertAtHead(num1, n1[i] - '0');
+
+    for (int i = 0; i < n2.length(); i++)
+        insertAtHead(num2, n2[i] - '0');
+
+    Node* result = addNumbers(num1, num2);
+
+    cout << "Result: ";
+    display(result);
+
+    return 0;
+}
