@@ -1,0 +1,63 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+
+    cout << "Enter number of candidates: ";
+    cin >> n;
+
+    string candidates[n];
+    int votes[n];
+
+    // Initialize votes to 0
+    for(int i = 0; i < n; i++) {
+        votes[i] = 0;
+    }
+
+    // Input candidate names
+    cout << "\nEnter candidate names:\n";
+    for(int i = 0; i < n; i++) {
+        cout << "Candidate " << i + 1 << ": ";
+        cin >> candidates[i];
+    }
+
+    int totalVotes;
+    cout << "\nEnter number of voters: ";
+    cin >> totalVotes;
+
+    // Voting process
+    for(int i = 0; i < totalVotes; i++) {
+        int choice;
+        cout << "\nVoter " << i + 1 << ", choose candidate (1-" << n << "): ";
+        cin >> choice;
+
+        if(choice >= 1 && choice <= n) {
+            votes[choice - 1]++;
+        } else {
+            cout << "Invalid choice! Vote skipped.\n";
+        }
+    }
+
+    // Display results
+    cout << "\n--- Voting Results ---\n";
+    for(int i = 0; i < n; i++) {
+        cout << candidates[i] << " : " << votes[i] << " votes\n";
+    }
+
+    // Find winner
+    int maxVotes = votes[0];
+    int winnerIndex = 0;
+
+    for(int i = 1; i < n; i++) {
+        if(votes[i] > maxVotes) {
+            maxVotes = votes[i];
+            winnerIndex = i;
+        }
+    }
+
+    cout << "\n🏆 Winner: " << candidates[winnerIndex] 
+         << " with " << maxVotes << " votes!\n";
+
+    return 0;
+}
