@@ -1,0 +1,153 @@
+#include <iostream>
+using namespace std;
+
+const int MAX = 5;
+
+class CPUQueue {
+private:
+    int front, rear;
+    int processID[MAX];
+    int burstTime[MAX];
+
+public:
+    CPUQueue() {
+        front = -1;
+        rear = -1;
+    }
+
+    bool isFull() {
+        return (rear == MAX - 1);
+    }
+
+    bool isEmpty() {
+        return (front == -1 || front > rear);
+    }
+
+    void addProcess(int id, int time) {
+        if (isFull()) {
+            cout << "Queue is Full! Cannot add process.\n";
+            return;
+        }
+
+        if (front == -1)
+            front = 0;
+
+        rear++;
+        processID[rear] = id;
+        burstTime[rear] = time;
+
+        cout << "Process Added Successfully!\n";
+    }
+
+    void executeProcess() {
+        if (isEmpty()) {
+            cout << "No Process to Execute!\n";
+            return;
+        }
+
+        cout << "Executing Process ID: " << processID[front]
+             << " | Burst Time: " << burstTime[front] << endl;
+
+        front++;
+    }
+
+    void nextProcess() {
+        if (isEmpty()) {
+            cout << "No Process in Queue!\n";
+            return;
+        }
+
+        cout << "Next Process ID: " << processID[front]
+             << " | Burst Time: " << burstTime[front] << endl;
+    }
+
+    void displayQueue() {
+        if (isEmpty()) {
+            cout << "Queue is Empty!\n";
+            return;
+        }
+
+        cout << "\n--- Waiting Processes ---\n";
+        for (int i = front; i <= rear; i++) {
+            cout << "Process ID: " << processID[i]
+                 << " | Burst Time: " << burstTime[i] << endl;
+        }
+    }
+
+    void totalProcesses() {
+        if (isEmpty()) {
+            cout << "Total Processes: 0\n";
+            return;
+        }
+        cout << "Total Processes: " << (rear - front + 1) << endl;
+    }
+
+    void totalBurstTime() {
+        if (isEmpty()) {
+            cout << "Total Burst Time: 0\n";
+            return;
+        }
+
+        int total = 0;
+        for (int i = front; i <= rear; i++) {
+            total += burstTime[i];
+        }
+
+        cout << "Total Burst Time Remaining: " << total << endl;
+    }
+};
+
+int main() {
+    CPUQueue cpu;
+    int choice, id, time;
+
+    while (true) {
+        cout << "\n===== CPU Scheduler Menu =====\n";
+        cout << "1. Add Process\n";
+        cout << "2. Execute Process\n";
+        cout << "3. View Next Process\n";
+        cout << "4. Display Queue\n";
+        cout << "5. Count Processes\n";
+        cout << "6. Total Burst Time\n";
+        cout << "7. Exit\n";
+        cout << "Enter choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                cout << "Enter Process ID: ";
+                cin >> id;
+                cout << "Enter Burst Time: ";
+                cin >> time;
+                cpu.addProcess(id, time);
+                break;
+
+            case 2:
+                cpu.executeProcess();
+                break;
+
+            case 3:
+                cpu.nextProcess();
+                break;
+
+            case 4:
+                cpu.displayQueue();
+                break;
+
+            case 5:
+                cpu.totalProcesses();
+                break;
+
+            case 6:
+                cpu.totalBurstTime();
+                break;
+
+            case 7:
+                cout << "Exiting...\n";
+                return 0;
+
+            default:
+                cout << "Invalid Choice!\n";
+        }
+    }
+}
