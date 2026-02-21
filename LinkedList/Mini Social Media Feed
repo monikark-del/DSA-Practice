@@ -1,0 +1,207 @@
+#include <iostream>
+using namespace std;
+
+class Post {
+public:
+    int id;
+    string content;
+    int likes;
+    string comment;
+    Post* next;
+
+    Post(int i, string c) {
+        id = i;
+        content = c;
+        likes = 0;
+        comment = "No comments";
+        next = NULL;
+    }
+};
+
+class SocialMedia {
+private:
+    Post* head;
+
+public:
+    SocialMedia() {
+        head = NULL;
+    }
+
+    // Create Post (Insert at beginning for newest first)
+    void createPost(int id, string content) {
+        Post* newPost = new Post(id, content);
+        newPost->next = head;
+        head = newPost;
+        cout << "Post Created Successfully!\n";
+    }
+
+    // Like Post
+    void likePost(int id) {
+        Post* temp = head;
+        while (temp != NULL) {
+            if (temp->id == id) {
+                temp->likes++;
+                cout << "Post Liked!\n";
+                return;
+            }
+            temp = temp->next;
+        }
+        cout << "Post Not Found!\n";
+    }
+
+    // Comment on Post
+    void commentPost(int id, string cmt) {
+        Post* temp = head;
+        while (temp != NULL) {
+            if (temp->id == id) {
+                temp->comment = cmt;
+                cout << "Comment Added!\n";
+                return;
+            }
+            temp = temp->next;
+        }
+        cout << "Post Not Found!\n";
+    }
+
+    // Delete Post
+    void deletePost(int id) {
+        Post* temp = head;
+        Post* prev = NULL;
+
+        while (temp != NULL && temp->id != id) {
+            prev = temp;
+            temp = temp->next;
+        }
+
+        if (temp == NULL) {
+            cout << "Post Not Found!\n";
+            return;
+        }
+
+        if (prev == NULL)
+            head = temp->next;
+        else
+            prev->next = temp->next;
+
+        delete temp;
+        cout << "Post Deleted Successfully!\n";
+    }
+
+    // Display Feed
+    void displayFeed() {
+        if (head == NULL) {
+            cout << "No Posts Available!\n";
+            return;
+        }
+
+        Post* temp = head;
+        cout << "\n----- Social Media Feed -----\n";
+        while (temp != NULL) {
+            cout << "\nPost ID: " << temp->id << endl;
+            cout << "Content: " << temp->content << endl;
+            cout << "Likes: " << temp->likes << endl;
+            cout << "Comment: " << temp->comment << endl;
+            temp = temp->next;
+        }
+    }
+
+    // Count Total Likes
+    void totalLikes() {
+        int total = 0;
+        Post* temp = head;
+        while (temp != NULL) {
+            total += temp->likes;
+            temp = temp->next;
+        }
+        cout << "Total Likes in Feed: " << total << endl;
+    }
+
+    // Search Post
+    void searchPost(int id) {
+        Post* temp = head;
+        while (temp != NULL) {
+            if (temp->id == id) {
+                cout << "\nPost Found!\n";
+                cout << "Content: " << temp->content << endl;
+                cout << "Likes: " << temp->likes << endl;
+                cout << "Comment: " << temp->comment << endl;
+                return;
+            }
+            temp = temp->next;
+        }
+        cout << "Post Not Found!\n";
+    }
+};
+
+int main() {
+    SocialMedia sm;
+    int choice, id;
+    string content, comment;
+
+    while (true) {
+        cout << "\n===== Mini Social Media =====\n";
+        cout << "1. Create Post\n";
+        cout << "2. Like Post\n";
+        cout << "3. Comment on Post\n";
+        cout << "4. Delete Post\n";
+        cout << "5. Display Feed\n";
+        cout << "6. Total Likes\n";
+        cout << "7. Search Post\n";
+        cout << "8. Exit\n";
+        cout << "Enter choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                cout << "Enter Post ID: ";
+                cin >> id;
+                cin.ignore();
+                cout << "Enter Content: ";
+                getline(cin, content);
+                sm.createPost(id, content);
+                break;
+
+            case 2:
+                cout << "Enter Post ID to Like: ";
+                cin >> id;
+                sm.likePost(id);
+                break;
+
+            case 3:
+                cout << "Enter Post ID to Comment: ";
+                cin >> id;
+                cin.ignore();
+                cout << "Enter Comment: ";
+                getline(cin, comment);
+                sm.commentPost(id, comment);
+                break;
+
+            case 4:
+                cout << "Enter Post ID to Delete: ";
+                cin >> id;
+                sm.deletePost(id);
+                break;
+
+            case 5:
+                sm.displayFeed();
+                break;
+
+            case 6:
+                sm.totalLikes();
+                break;
+
+            case 7:
+                cout << "Enter Post ID to Search: ";
+                cin >> id;
+                sm.searchPost(id);
+                break;
+
+            case 8:
+                cout << "Exiting...\n";
+                return 0;
+
+            default:
+                cout << "Invalid Choice!\n";
+        }
+    }
+}
