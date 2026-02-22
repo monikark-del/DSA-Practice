@@ -1,0 +1,134 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Patient {
+public:
+    int id;
+    string name;
+    int age;
+    int priority;
+    Patient* next;
+
+    Patient(int pid, string pname, int page, int ppriority) {
+        id = pid;
+        name = pname;
+        age = page;
+        priority = ppriority;
+        next = NULL;
+    }
+};
+
+class EmergencyQueue {
+private:
+    Patient* front;
+
+public:
+    EmergencyQueue() {
+        front = NULL;
+    }
+
+    void addPatient() {
+        int id, age, priority;
+        string name;
+
+        cout << "Enter Patient ID: ";
+        cin >> id;
+        cin.ignore();
+
+        cout << "Enter Patient Name: ";
+        getline(cin, name);
+
+        cout << "Enter Age: ";
+        cin >> age;
+
+        cout << "Enter Priority (1-Critical, 2-Serious, 3-Normal): ";
+        cin >> priority;
+
+        Patient* newPatient = new Patient(id, name, age, priority);
+
+        // Insert based on priority
+        if(front == NULL || priority < front->priority) {
+            newPatient->next = front;
+            front = newPatient;
+        } else {
+            Patient* temp = front;
+            while(temp->next != NULL && temp->next->priority <= priority) {
+                temp = temp->next;
+            }
+            newPatient->next = temp->next;
+            temp->next = newPatient;
+        }
+
+        cout << "Patient Added Successfully!\n";
+    }
+
+    void treatPatient() {
+        if(front == NULL) {
+            cout << "No Patients in Queue!\n";
+            return;
+        }
+
+        Patient* temp = front;
+        cout << "Treating Patient: " << temp->name
+             << " (Priority: " << temp->priority << ")\n";
+
+        front = front->next;
+        delete temp;
+    }
+
+    void displayPatients() {
+        if(front == NULL) {
+            cout << "No Patients in Queue!\n";
+            return;
+        }
+
+        Patient* temp = front;
+        cout << "\n--- Emergency Queue ---\n";
+        while(temp != NULL) {
+            cout << "ID: " << temp->id
+                 << " | Name: " << temp->name
+                 << " | Age: " << temp->age
+                 << " | Priority: " << temp->priority << endl;
+            temp = temp->next;
+        }
+    }
+
+    void peekNextPatient() {
+        if(front == NULL) {
+            cout << "No Patients in Queue!\n";
+            return;
+        }
+
+        cout << "Next Patient: " << front->name
+             << " (Priority: " << front->priority << ")\n";
+    }
+};
+
+int main() {
+    EmergencyQueue hospital;
+    int choice;
+
+    do {
+        cout << "\n===== Hospital Emergency System =====\n";
+        cout << "1. Add Patient\n";
+        cout << "2. Treat Patient\n";
+        cout << "3. View Next Patient\n";
+        cout << "4. Display All Patients\n";
+        cout << "5. Exit\n";
+        cout << "Enter Choice: ";
+        cin >> choice;
+
+        switch(choice) {
+            case 1: hospital.addPatient(); break;
+            case 2: hospital.treatPatient(); break;
+            case 3: hospital.peekNextPatient(); break;
+            case 4: hospital.displayPatients(); break;
+            case 5: cout << "Exiting Program...\n"; break;
+            default: cout << "Invalid Choice!\n";
+        }
+
+    } while(choice != 5);
+
+    return 0;
+}
