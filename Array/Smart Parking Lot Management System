@@ -1,0 +1,118 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+const int MAX_SLOTS = 10;
+
+class ParkingLot {
+private:
+    string vehicleNumber[MAX_SLOTS];
+    string vehicleType[MAX_SLOTS];
+    bool occupied[MAX_SLOTS];
+
+public:
+    ParkingLot() {
+        for(int i = 0; i < MAX_SLOTS; i++) {
+            occupied[i] = false;
+        }
+    }
+
+    void parkVehicle() {
+        string number, type;
+        cout << "Enter Vehicle Number: ";
+        cin >> number;
+        cout << "Enter Vehicle Type (Car/Bike): ";
+        cin >> type;
+
+        for(int i = 0; i < MAX_SLOTS; i++) {
+            if(!occupied[i]) {
+                vehicleNumber[i] = number;
+                vehicleType[i] = type;
+                occupied[i] = true;
+                cout << "Vehicle Parked at Slot " << i + 1 << endl;
+                return;
+            }
+        }
+        cout << "Parking Full!\n";
+    }
+
+    void removeVehicle() {
+        string number;
+        cout << "Enter Vehicle Number to Remove: ";
+        cin >> number;
+
+        for(int i = 0; i < MAX_SLOTS; i++) {
+            if(occupied[i] && vehicleNumber[i] == number) {
+                occupied[i] = false;
+                cout << "Vehicle Removed from Slot " << i + 1 << endl;
+                return;
+            }
+        }
+        cout << "Vehicle Not Found!\n";
+    }
+
+    void searchVehicle() {
+        string number;
+        cout << "Enter Vehicle Number to Search: ";
+        cin >> number;
+
+        for(int i = 0; i < MAX_SLOTS; i++) {
+            if(occupied[i] && vehicleNumber[i] == number) {
+                cout << "Vehicle Found at Slot " << i + 1 << endl;
+                return;
+            }
+        }
+        cout << "Vehicle Not Found!\n";
+    }
+
+    void displayParking() {
+        cout << "\n--- Parking Status ---\n";
+        for(int i = 0; i < MAX_SLOTS; i++) {
+            if(occupied[i]) {
+                cout << "Slot " << i + 1 << ": "
+                     << vehicleNumber[i] << " (" << vehicleType[i] << ")\n";
+            } else {
+                cout << "Slot " << i + 1 << ": Empty\n";
+            }
+        }
+    }
+
+    void availableSlots() {
+        int count = 0;
+        for(int i = 0; i < MAX_SLOTS; i++) {
+            if(!occupied[i])
+                count++;
+        }
+        cout << "Available Slots: " << count << endl;
+    }
+};
+
+int main() {
+    ParkingLot lot;
+    int choice;
+
+    do {
+        cout << "\n===== Smart Parking Lot =====\n";
+        cout << "1. Park Vehicle\n";
+        cout << "2. Remove Vehicle\n";
+        cout << "3. Search Vehicle\n";
+        cout << "4. Display Parking\n";
+        cout << "5. Show Available Slots\n";
+        cout << "6. Exit\n";
+        cout << "Enter Choice: ";
+        cin >> choice;
+
+        switch(choice) {
+            case 1: lot.parkVehicle(); break;
+            case 2: lot.removeVehicle(); break;
+            case 3: lot.searchVehicle(); break;
+            case 4: lot.displayParking(); break;
+            case 5: lot.availableSlots(); break;
+            case 6: cout << "Exiting Program...\n"; break;
+            default: cout << "Invalid Choice!\n";
+        }
+
+    } while(choice != 6);
+
+    return 0;
+}
