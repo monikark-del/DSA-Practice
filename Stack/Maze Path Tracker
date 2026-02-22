@@ -1,0 +1,106 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+const int MAX = 20;
+
+class MoveStack {
+private:
+    string stack[MAX];
+    int top;
+
+public:
+    MoveStack() {
+        top = -1;
+    }
+
+    bool isEmpty() {
+        return (top == -1);
+    }
+
+    bool isFull() {
+        return (top == MAX - 1);
+    }
+
+    void pushMove() {
+        if(isFull()) {
+            cout << "Path memory full! Cannot move further.\n";
+            return;
+        }
+
+        string direction;
+        cout << "Enter Move (UP/DOWN/LEFT/RIGHT): ";
+        cin >> direction;
+
+        stack[++top] = direction;
+        cout << "Move Added!\n";
+    }
+
+    void undoMove() {
+        if(isEmpty()) {
+            cout << "No moves to undo!\n";
+            return;
+        }
+
+        cout << "Undo Move: " << stack[top] << endl;
+        top--;
+    }
+
+    void showLastMove() {
+        if(isEmpty()) {
+            cout << "No moves yet!\n";
+            return;
+        }
+
+        cout << "Last Move: " << stack[top] << endl;
+    }
+
+    void displayPath() {
+        if(isEmpty()) {
+            cout << "No path created yet!\n";
+            return;
+        }
+
+        cout << "\n--- Current Path ---\n";
+        for(int i = 0; i <= top; i++) {
+            cout << stack[i];
+            if(i != top)
+                cout << " -> ";
+        }
+        cout << endl;
+    }
+
+    void pathLength() {
+        cout << "Total Moves: " << top + 1 << endl;
+    }
+};
+
+int main() {
+    MoveStack maze;
+    int choice;
+
+    do {
+        cout << "\n===== Maze Path Tracker =====\n";
+        cout << "1. Make Move\n";
+        cout << "2. Undo Move\n";
+        cout << "3. Show Last Move\n";
+        cout << "4. Display Current Path\n";
+        cout << "5. Show Total Moves\n";
+        cout << "6. Exit\n";
+        cout << "Enter Choice: ";
+        cin >> choice;
+
+        switch(choice) {
+            case 1: maze.pushMove(); break;
+            case 2: maze.undoMove(); break;
+            case 3: maze.showLastMove(); break;
+            case 4: maze.displayPath(); break;
+            case 5: maze.pathLength(); break;
+            case 6: cout << "Exiting Program...\n"; break;
+            default: cout << "Invalid Choice!\n";
+        }
+
+    } while(choice != 6);
+
+    return 0;
+}
