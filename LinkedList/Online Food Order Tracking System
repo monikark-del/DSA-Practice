@@ -1,0 +1,184 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Order {
+public:
+    int orderID;
+    string customerName;
+    string foodItem;
+    string status;
+    Order* next;
+
+    Order(int id, string name, string item) {
+        orderID = id;
+        customerName = name;
+        foodItem = item;
+        status = "Preparing";
+        next = NULL;
+    }
+};
+
+class OrderSystem {
+private:
+    Order* head;
+
+public:
+    OrderSystem() {
+        head = NULL;
+    }
+
+    void addOrder() {
+        int id;
+        string name, item;
+
+        cout << "Enter Order ID: ";
+        cin >> id;
+        cin.ignore();
+
+        cout << "Enter Customer Name: ";
+        getline(cin, name);
+
+        cout << "Enter Food Item: ";
+        getline(cin, item);
+
+        Order* newOrder = new Order(id, name, item);
+
+        if(head == NULL) {
+            head = newOrder;
+        } else {
+            Order* temp = head;
+            while(temp->next != NULL) {
+                temp = temp->next;
+            }
+            temp->next = newOrder;
+        }
+
+        cout << "Order Added Successfully!\n";
+    }
+
+    void updateStatus() {
+        int id;
+        cout << "Enter Order ID to Update: ";
+        cin >> id;
+
+        Order* temp = head;
+        while(temp != NULL) {
+            if(temp->orderID == id) {
+                cout << "1. Preparing\n2. Ready\n3. Delivered\n";
+                int choice;
+                cout << "Select New Status: ";
+                cin >> choice;
+
+                if(choice == 1) temp->status = "Preparing";
+                else if(choice == 2) temp->status = "Ready";
+                else if(choice == 3) temp->status = "Delivered";
+                else cout << "Invalid Choice!\n";
+
+                cout << "Status Updated!\n";
+                return;
+            }
+            temp = temp->next;
+        }
+
+        cout << "Order Not Found!\n";
+    }
+
+    void cancelOrder() {
+        int id;
+        cout << "Enter Order ID to Cancel: ";
+        cin >> id;
+
+        Order* temp = head;
+        Order* prev = NULL;
+
+        while(temp != NULL && temp->orderID != id) {
+            prev = temp;
+            temp = temp->next;
+        }
+
+        if(temp == NULL) {
+            cout << "Order Not Found!\n";
+            return;
+        }
+
+        if(prev == NULL) {
+            head = temp->next;
+        } else {
+            prev->next = temp->next;
+        }
+
+        delete temp;
+        cout << "Order Cancelled Successfully!\n";
+    }
+
+    void searchOrder() {
+        int id;
+        cout << "Enter Order ID to Search: ";
+        cin >> id;
+
+        Order* temp = head;
+
+        while(temp != NULL) {
+            if(temp->orderID == id) {
+                cout << "\nOrder Found!\n";
+                cout << "Customer: " << temp->customerName << endl;
+                cout << "Food: " << temp->foodItem << endl;
+                cout << "Status: " << temp->status << endl;
+                return;
+            }
+            temp = temp->next;
+        }
+
+        cout << "Order Not Found!\n";
+    }
+
+    void displayOrders() {
+        if(head == NULL) {
+            cout << "No Orders Available!\n";
+            return;
+        }
+
+        Order* temp = head;
+
+        cout << "\n--- All Orders ---\n";
+        while(temp != NULL) {
+            cout << "Order ID: " << temp->orderID << endl;
+            cout << "Customer: " << temp->customerName << endl;
+            cout << "Food: " << temp->foodItem << endl;
+            cout << "Status: " << temp->status << endl;
+            cout << "-----------------------\n";
+            temp = temp->next;
+        }
+    }
+};
+
+int main() {
+    OrderSystem system;
+    int choice;
+
+    do {
+        cout << "\n===== Online Food Order System =====\n";
+        cout << "1. Add Order\n";
+        cout << "2. Update Status\n";
+        cout << "3. Cancel Order\n";
+        cout << "4. Search Order\n";
+        cout << "5. Display All Orders\n";
+        cout << "6. Exit\n";
+        cout << "Enter Choice: ";
+        cin >> choice;
+
+        switch(choice) {
+            case 1: system.addOrder(); break;
+            case 2: system.updateStatus(); break;
+            case 3: system.cancelOrder(); break;
+            case 4: system.searchOrder(); break;
+            case 5: system.displayOrders(); break;
+            case 6: cout << "Exiting Program...\n"; break;
+            default: cout << "Invalid Choice!\n";
+        }
+
+    } while(choice != 6);
+
+    return 0;
+}
