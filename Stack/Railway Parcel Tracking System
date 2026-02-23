@@ -1,0 +1,153 @@
+#include <iostream>
+using namespace std;
+
+#define MAX 100
+
+class Parcel {
+public:
+    int id;
+    string sender;
+    string receiver;
+    float weight;
+};
+
+class ParcelStack {
+    Parcel stack[MAX];
+    int top;
+
+public:
+    ParcelStack() {
+        top = -1;
+    }
+
+    bool isFull() {
+        return top == MAX - 1;
+    }
+
+    bool isEmpty() {
+        return top == -1;
+    }
+
+    void push(int id, string sender, string receiver, float weight) {
+        if (isFull()) {
+            cout << "Storage Full! Cannot add parcel.\n";
+            return;
+        }
+
+        top++;
+        stack[top].id = id;
+        stack[top].sender = sender;
+        stack[top].receiver = receiver;
+        stack[top].weight = weight;
+
+        cout << "Parcel added successfully!\n";
+    }
+
+    void pop() {
+        if (isEmpty()) {
+            cout << "No parcels to dispatch!\n";
+            return;
+        }
+
+        cout << "Dispatching Parcel ID: " << stack[top].id << endl;
+        top--;
+    }
+
+    void peek() {
+        if (isEmpty()) {
+            cout << "No parcels in storage!\n";
+            return;
+        }
+
+        cout << "Top Parcel Details:\n";
+        cout << "ID: " << stack[top].id
+             << " | Sender: " << stack[top].sender
+             << " | Receiver: " << stack[top].receiver
+             << " | Weight: " << stack[top].weight << " kg\n";
+    }
+
+    void display() {
+        if (isEmpty()) {
+            cout << "No parcels available!\n";
+            return;
+        }
+
+        cout << "\n--- Parcel Storage ---\n";
+        for (int i = top; i >= 0; i--) {
+            cout << "ID: " << stack[i].id
+                 << " | Sender: " << stack[i].sender
+                 << " | Receiver: " << stack[i].receiver
+                 << " | Weight: " << stack[i].weight << " kg\n";
+        }
+    }
+
+    void totalParcels() {
+        cout << "Total Parcels: " << top + 1 << endl;
+    }
+
+    void totalWeight() {
+        float total = 0;
+        for (int i = 0; i <= top; i++) {
+            total += stack[i].weight;
+        }
+        cout << "Total Weight in Storage: " << total << " kg\n";
+    }
+};
+
+int main() {
+    ParcelStack ps;
+    int choice, id;
+    string sender, receiver;
+    float weight;
+
+    do {
+        cout << "\n1. Add Parcel\n2. Dispatch Parcel\n3. View Top Parcel\n4. Display All Parcels\n5. Count Parcels\n6. Total Weight\n7. Exit\n";
+        cout << "Enter choice: ";
+        cin >> choice;
+
+        switch (choice) {
+        case 1:
+            cout << "Enter Parcel ID: ";
+            cin >> id;
+            cin.ignore();
+            cout << "Enter Sender Name: ";
+            getline(cin, sender);
+            cout << "Enter Receiver Name: ";
+            getline(cin, receiver);
+            cout << "Enter Weight (kg): ";
+            cin >> weight;
+            ps.push(id, sender, receiver, weight);
+            break;
+
+        case 2:
+            ps.pop();
+            break;
+
+        case 3:
+            ps.peek();
+            break;
+
+        case 4:
+            ps.display();
+            break;
+
+        case 5:
+            ps.totalParcels();
+            break;
+
+        case 6:
+            ps.totalWeight();
+            break;
+
+        case 7:
+            cout << "Exiting system...\n";
+            break;
+
+        default:
+            cout << "Invalid choice!\n";
+        }
+
+    } while (choice != 7);
+
+    return 0;
+}
