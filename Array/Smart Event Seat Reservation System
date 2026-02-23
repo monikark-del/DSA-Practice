@@ -1,0 +1,120 @@
+#include <iostream>
+using namespace std;
+
+class SeatReservation {
+    int seats[100];
+    int totalSeats;
+
+public:
+    void initialize(int n) {
+        totalSeats = n;
+        for (int i = 0; i < totalSeats; i++) {
+            seats[i] = 0;
+        }
+    }
+
+    void reserveSeat(int seatNo) {
+        if (seatNo < 1 || seatNo > totalSeats) {
+            cout << "Invalid seat number!\n";
+            return;
+        }
+        if (seats[seatNo - 1] == 1) {
+            cout << "Seat already reserved!\n";
+        } else {
+            seats[seatNo - 1] = 1;
+            cout << "Seat reserved successfully!\n";
+        }
+    }
+
+    void cancelSeat(int seatNo) {
+        if (seatNo < 1 || seatNo > totalSeats) {
+            cout << "Invalid seat number!\n";
+            return;
+        }
+        if (seats[seatNo - 1] == 0) {
+            cout << "Seat already free!\n";
+        } else {
+            seats[seatNo - 1] = 0;
+            cout << "Reservation cancelled!\n";
+        }
+    }
+
+    void displaySeats() {
+        cout << "\nSeat Status:\n";
+        for (int i = 0; i < totalSeats; i++) {
+            cout << "Seat " << i + 1 << ": ";
+            if (seats[i] == 0)
+                cout << "Available\n";
+            else
+                cout << "Reserved\n";
+        }
+    }
+
+    void availableCount() {
+        int count = 0;
+        for (int i = 0; i < totalSeats; i++) {
+            if (seats[i] == 0)
+                count++;
+        }
+        cout << "Total Available Seats: " << count << endl;
+    }
+
+    void longestFreeBlock() {
+        int maxBlock = 0, currentBlock = 0;
+        for (int i = 0; i < totalSeats; i++) {
+            if (seats[i] == 0) {
+                currentBlock++;
+                if (currentBlock > maxBlock)
+                    maxBlock = currentBlock;
+            } else {
+                currentBlock = 0;
+            }
+        }
+        cout << "Longest Continuous Free Block: " << maxBlock << endl;
+    }
+};
+
+int main() {
+    SeatReservation s;
+    int n, choice, seatNo;
+
+    cout << "Enter total number of seats: ";
+    cin >> n;
+
+    s.initialize(n);
+
+    do {
+        cout << "\n1. Reserve Seat\n2. Cancel Seat\n3. Display Seats\n4. Available Count\n5. Longest Free Block\n6. Exit\n";
+        cout << "Enter choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                cout << "Enter seat number to reserve: ";
+                cin >> seatNo;
+                s.reserveSeat(seatNo);
+                break;
+            case 2:
+                cout << "Enter seat number to cancel: ";
+                cin >> seatNo;
+                s.cancelSeat(seatNo);
+                break;
+            case 3:
+                s.displaySeats();
+                break;
+            case 4:
+                s.availableCount();
+                break;
+            case 5:
+                s.longestFreeBlock();
+                break;
+            case 6:
+                cout << "Exiting...\n";
+                break;
+            default:
+                cout << "Invalid choice!\n";
+        }
+    } while (choice != 6);
+
+    return 0;
+}
