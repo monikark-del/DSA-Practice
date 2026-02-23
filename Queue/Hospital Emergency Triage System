@@ -1,0 +1,157 @@
+#include <iostream>
+using namespace std;
+
+#define MAX 100
+
+class Patient {
+public:
+    int id;
+    string name;
+    int age;
+    int severity;
+};
+
+class EmergencyQueue {
+    Patient queue[MAX];
+    int size;
+
+public:
+    EmergencyQueue() {
+        size = 0;
+    }
+
+    bool isFull() {
+        return size == MAX;
+    }
+
+    bool isEmpty() {
+        return size == 0;
+    }
+
+    void addPatient(int id, string name, int age, int severity) {
+        if (isFull()) {
+            cout << "Queue is full!\n";
+            return;
+        }
+
+        Patient p;
+        p.id = id;
+        p.name = name;
+        p.age = age;
+        p.severity = severity;
+
+        int i = size - 1;
+
+        // Insert in descending order of severity
+        while (i >= 0 && queue[i].severity < severity) {
+            queue[i + 1] = queue[i];
+            i--;
+        }
+
+        queue[i + 1] = p;
+        size++;
+
+        cout << "Patient added successfully!\n";
+    }
+
+    void treatPatient() {
+        if (isEmpty()) {
+            cout << "No patients in queue!\n";
+            return;
+        }
+
+        cout << "Treating Patient: " 
+             << queue[0].name 
+             << " (Severity: " << queue[0].severity << ")\n";
+
+        // Shift elements left
+        for (int i = 1; i < size; i++) {
+            queue[i - 1] = queue[i];
+        }
+
+        size--;
+    }
+
+    void displayQueue() {
+        if (isEmpty()) {
+            cout << "No patients waiting!\n";
+            return;
+        }
+
+        cout << "\n--- Waiting List ---\n";
+        for (int i = 0; i < size; i++) {
+            cout << "ID: " << queue[i].id
+                 << " | Name: " << queue[i].name
+                 << " | Age: " << queue[i].age
+                 << " | Severity: " << queue[i].severity << endl;
+        }
+    }
+
+    void mostCritical() {
+        if (isEmpty()) {
+            cout << "No patients!\n";
+            return;
+        }
+
+        cout << "Most Critical Patient: "
+             << queue[0].name
+             << " (Severity: " << queue[0].severity << ")\n";
+    }
+
+    void totalPatients() {
+        cout << "Total Patients Waiting: " << size << endl;
+    }
+};
+
+int main() {
+    EmergencyQueue eq;
+    int choice, id, age, severity;
+    string name;
+
+    do {
+        cout << "\n1. Add Patient\n2. Treat Patient\n3. Display Queue\n4. Most Critical\n5. Total Patients\n6. Exit\n";
+        cout << "Enter choice: ";
+        cin >> choice;
+
+        switch (choice) {
+        case 1:
+            cout << "Enter ID: ";
+            cin >> id;
+            cin.ignore();
+            cout << "Enter Name: ";
+            getline(cin, name);
+            cout << "Enter Age: ";
+            cin >> age;
+            cout << "Enter Severity (1-5): ";
+            cin >> severity;
+            eq.addPatient(id, name, age, severity);
+            break;
+
+        case 2:
+            eq.treatPatient();
+            break;
+
+        case 3:
+            eq.displayQueue();
+            break;
+
+        case 4:
+            eq.mostCritical();
+            break;
+
+        case 5:
+            eq.totalPatients();
+            break;
+
+        case 6:
+            cout << "Exiting...\n";
+            break;
+
+        default:
+            cout << "Invalid choice!\n";
+        }
+
+    } while (choice != 6);
+
+    return 0;
+}
