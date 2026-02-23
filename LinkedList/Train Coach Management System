@@ -1,0 +1,232 @@
+#include <iostream>
+using namespace std;
+
+class Coach {
+public:
+    int coachNo;
+    string type;
+    int totalSeats;
+    int availableSeats;
+    Coach* next;
+
+    Coach(int no, string t, int total) {
+        coachNo = no;
+        type = t;
+        totalSeats = total;
+        availableSeats = total;
+        next = NULL;
+    }
+};
+
+class Train {
+    Coach* head;
+
+public:
+    Train() {
+        head = NULL;
+    }
+
+    void addCoach(int no, string type, int seats) {
+        Coach* newCoach = new Coach(no, type, seats);
+
+        if (head == NULL) {
+            head = newCoach;
+        } else {
+            Coach* temp = head;
+            while (temp->next != NULL)
+                temp = temp->next;
+            temp->next = newCoach;
+        }
+
+        cout << "Coach added successfully!\n";
+    }
+
+    void insertAtPosition(int pos, int no, string type, int seats) {
+        Coach* newCoach = new Coach(no, type, seats);
+
+        if (pos == 1) {
+            newCoach->next = head;
+            head = newCoach;
+            cout << "Coach inserted at position 1!\n";
+            return;
+        }
+
+        Coach* temp = head;
+        for (int i = 1; i < pos - 1 && temp != NULL; i++)
+            temp = temp->next;
+
+        if (temp == NULL) {
+            cout << "Invalid position!\n";
+            return;
+        }
+
+        newCoach->next = temp->next;
+        temp->next = newCoach;
+
+        cout << "Coach inserted!\n";
+    }
+
+    void removeCoach(int no) {
+        if (head == NULL) {
+            cout << "Train is empty!\n";
+            return;
+        }
+
+        if (head->coachNo == no) {
+            Coach* temp = head;
+            head = head->next;
+            delete temp;
+            cout << "Coach removed!\n";
+            return;
+        }
+
+        Coach* temp = head;
+        while (temp->next != NULL && temp->next->coachNo != no)
+            temp = temp->next;
+
+        if (temp->next == NULL) {
+            cout << "Coach not found!\n";
+        } else {
+            Coach* del = temp->next;
+            temp->next = del->next;
+            delete del;
+            cout << "Coach removed!\n";
+        }
+    }
+
+    void bookSeats(int no, int seats) {
+        Coach* temp = head;
+        while (temp != NULL) {
+            if (temp->coachNo == no) {
+                if (temp->availableSeats >= seats) {
+                    temp->availableSeats -= seats;
+                    cout << "Seats booked successfully!\n";
+                } else {
+                    cout << "Not enough seats available!\n";
+                }
+                return;
+            }
+            temp = temp->next;
+        }
+        cout << "Coach not found!\n";
+    }
+
+    void display() {
+        if (head == NULL) {
+            cout << "No coaches available!\n";
+            return;
+        }
+
+        Coach* temp = head;
+        cout << "\n--- Train Coaches ---\n";
+        while (temp != NULL) {
+            cout << "Coach No: " << temp->coachNo
+                 << " | Type: " << temp->type
+                 << " | Total Seats: " << temp->totalSeats
+                 << " | Available: " << temp->availableSeats << endl;
+            temp = temp->next;
+        }
+    }
+
+    void maxAvailableCoach() {
+        if (head == NULL) {
+            cout << "Train is empty!\n";
+            return;
+        }
+
+        Coach* temp = head;
+        Coach* maxCoach = head;
+
+        while (temp != NULL) {
+            if (temp->availableSeats > maxCoach->availableSeats)
+                maxCoach = temp;
+            temp = temp->next;
+        }
+
+        cout << "Coach with maximum available seats:\n";
+        cout << "Coach No: " << maxCoach->coachNo
+             << " | Available Seats: " << maxCoach->availableSeats << endl;
+    }
+
+    void totalSeats() {
+        int total = 0;
+        Coach* temp = head;
+        while (temp != NULL) {
+            total += temp->totalSeats;
+            temp = temp->next;
+        }
+        cout << "Total seats in train: " << total << endl;
+    }
+};
+
+int main() {
+    Train t;
+    int choice, no, seats, pos;
+    string type;
+
+    do {
+        cout << "\n1. Add Coach\n2. Insert Coach at Position\n3. Remove Coach\n4. Book Seats\n5. Display Coaches\n6. Max Available Coach\n7. Total Seats\n8. Exit\n";
+        cout << "Enter choice: ";
+        cin >> choice;
+
+        switch (choice) {
+        case 1:
+            cout << "Enter Coach No: ";
+            cin >> no;
+            cout << "Enter Type: ";
+            cin >> type;
+            cout << "Enter Total Seats: ";
+            cin >> seats;
+            t.addCoach(no, type, seats);
+            break;
+
+        case 2:
+            cout << "Enter Position: ";
+            cin >> pos;
+            cout << "Enter Coach No: ";
+            cin >> no;
+            cout << "Enter Type: ";
+            cin >> type;
+            cout << "Enter Total Seats: ";
+            cin >> seats;
+            t.insertAtPosition(pos, no, type, seats);
+            break;
+
+        case 3:
+            cout << "Enter Coach No to remove: ";
+            cin >> no;
+            t.removeCoach(no);
+            break;
+
+        case 4:
+            cout << "Enter Coach No: ";
+            cin >> no;
+            cout << "Enter Seats to Book: ";
+            cin >> seats;
+            t.bookSeats(no, seats);
+            break;
+
+        case 5:
+            t.display();
+            break;
+
+        case 6:
+            t.maxAvailableCoach();
+            break;
+
+        case 7:
+            t.totalSeats();
+            break;
+
+        case 8:
+            cout << "Exiting...\n";
+            break;
+
+        default:
+            cout << "Invalid choice!\n";
+        }
+
+    } while (choice != 8);
+
+    return 0;
+}
