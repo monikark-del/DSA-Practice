@@ -1,0 +1,123 @@
+#include <iostream>
+using namespace std;
+
+class Move {
+public:
+    string direction;
+    Move* next;
+
+    Move(string dir) {
+        direction = dir;
+        next = NULL;
+    }
+};
+
+class GameStack {
+private:
+    Move* top;
+
+public:
+    GameStack() {
+        top = NULL;
+    }
+
+    void push(string dir) {
+        Move* newMove = new Move(dir);
+        newMove->next = top;
+        top = newMove;
+        cout << "Move Added: " << dir << endl;
+    }
+
+    void pop() {
+        if (top == NULL) {
+            cout << "No moves to undo!\n";
+            return;
+        }
+
+        Move* temp = top;
+        cout << "Undo Move: " << temp->direction << endl;
+        top = top->next;
+        delete temp;
+    }
+
+    void peek() {
+        if (top == NULL) {
+            cout << "No moves made yet!\n";
+            return;
+        }
+        cout << "Last Move: " << top->direction << endl;
+    }
+
+    void display() {
+        if (top == NULL) {
+            cout << "No moves in history!\n";
+            return;
+        }
+
+        Move* temp = top;
+        cout << "\nMove History (Latest First):\n";
+        while (temp != NULL) {
+            cout << temp->direction << endl;
+            temp = temp->next;
+        }
+    }
+
+    void clear() {
+        while (top != NULL) {
+            pop();
+        }
+        cout << "Game Reset Done!\n";
+    }
+};
+
+int main() {
+    GameStack game;
+    int choice;
+    string move;
+
+    do {
+        cout << "\n===== Game Move Tracker =====\n";
+        cout << "1. Make Move\n";
+        cout << "2. Undo Move\n";
+        cout << "3. View Last Move\n";
+        cout << "4. Show Move History\n";
+        cout << "5. Reset Game\n";
+        cout << "0. Exit\n";
+        cout << "Enter choice: ";
+        cin >> choice;
+
+        switch (choice) {
+        case 1:
+            cout << "Enter Move (UP/DOWN/LEFT/RIGHT): ";
+            cin >> move;
+            game.push(move);
+            break;
+
+        case 2:
+            game.pop();
+            break;
+
+        case 3:
+            game.peek();
+            break;
+
+        case 4:
+            game.display();
+            break;
+
+        case 5:
+            game.clear();
+            break;
+
+        case 0:
+            cout << "Exiting...\n";
+            break;
+
+        default:
+            cout << "Invalid choice!\n";
+        }
+
+    } while (choice != 0);
+
+    return 0;
+}
