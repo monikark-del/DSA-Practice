@@ -1,0 +1,154 @@
+#include <iostream>
+using namespace std;
+
+class Parcel {
+public:
+    int parcelID;
+    string sender;
+    string receiver;
+    string address;
+    Parcel* next;
+
+    Parcel(int id, string s, string r, string a) {
+        parcelID = id;
+        sender = s;
+        receiver = r;
+        address = a;
+        next = NULL;
+    }
+};
+
+class ParcelQueue {
+private:
+    Parcel* front;
+    Parcel* rear;
+    int count;
+
+public:
+    ParcelQueue() {
+        front = rear = NULL;
+        count = 0;
+    }
+
+    void enqueue(int id, string sender, string receiver, string address) {
+        Parcel* newParcel = new Parcel(id, sender, receiver, address);
+
+        if (rear == NULL) {
+            front = rear = newParcel;
+        } else {
+            rear->next = newParcel;
+            rear = newParcel;
+        }
+
+        count++;
+        cout << "Parcel Added to Queue!\n";
+    }
+
+    void dequeue() {
+        if (front == NULL) {
+            cout << "No Parcels to Dispatch!\n";
+            return;
+        }
+
+        Parcel* temp = front;
+        cout << "Dispatching Parcel ID: " << temp->parcelID << endl;
+
+        front = front->next;
+        if (front == NULL)
+            rear = NULL;
+
+        delete temp;
+        count--;
+    }
+
+    void peek() {
+        if (front == NULL) {
+            cout << "Queue is Empty!\n";
+            return;
+        }
+
+        cout << "\nNext Parcel to Dispatch:\n";
+        cout << "ID: " << front->parcelID << endl;
+        cout << "Sender: " << front->sender << endl;
+        cout << "Receiver: " << front->receiver << endl;
+        cout << "Address: " << front->address << endl;
+    }
+
+    void display() {
+        if (front == NULL) {
+            cout << "Queue is Empty!\n";
+            return;
+        }
+
+        Parcel* temp = front;
+        cout << "\nPending Parcels:\n";
+        while (temp != NULL) {
+            cout << "ID: " << temp->parcelID
+                 << " | Sender: " << temp->sender
+                 << " | Receiver: " << temp->receiver << endl;
+            temp = temp->next;
+        }
+    }
+
+    void totalParcels() {
+        cout << "Total Parcels in Queue: " << count << endl;
+    }
+};
+
+int main() {
+    ParcelQueue pq;
+    int choice, id;
+    string sender, receiver, address;
+
+    do {
+        cout << "\n===== Parcel Delivery System =====\n";
+        cout << "1. Add Parcel\n";
+        cout << "2. Dispatch Parcel\n";
+        cout << "3. View Next Parcel\n";
+        cout << "4. Display All Parcels\n";
+        cout << "5. Total Parcels\n";
+        cout << "0. Exit\n";
+        cout << "Enter choice: ";
+        cin >> choice;
+
+        switch (choice) {
+        case 1:
+            cout << "Enter Parcel ID: ";
+            cin >> id;
+            cout << "Enter Sender Name: ";
+            cin >> sender;
+            cout << "Enter Receiver Name: ";
+            cin >> receiver;
+            cout << "Enter Address: ";
+            cin >> address;
+            pq.enqueue(id, sender, receiver, address);
+            break;
+
+        case 2:
+            pq.dequeue();
+            break;
+
+        case 3:
+            pq.peek();
+            break;
+
+        case 4:
+            pq.display();
+            break;
+
+        case 5:
+            pq.totalParcels();
+            break;
+
+        case 0:
+            cout << "Exiting Program...\n";
+            break;
+
+        default:
+            cout << "Invalid Choice!\n";
+        }
+
+    } while (choice != 0);
+
+    return 0;
+}
