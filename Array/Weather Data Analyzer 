@@ -1,0 +1,60 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    const int SIZE = 7;
+    float temp[SIZE];
+    float sum = 0, avg;
+    
+    cout << "Enter temperature for 7 days:\n";
+    for(int i = 0; i < SIZE; i++) {
+        cout << "Day " << i+1 << ": ";
+        cin >> temp[i];
+        sum += temp[i];
+    }
+
+    // Calculate average
+    avg = sum / SIZE;
+
+    // Find highest and lowest
+    float highest = temp[0];
+    float lowest = temp[0];
+
+    for(int i = 1; i < SIZE; i++) {
+        if(temp[i] > highest)
+            highest = temp[i];
+        if(temp[i] < lowest)
+            lowest = temp[i];
+    }
+
+    // Count days above average
+    int countAbove = 0;
+    for(int i = 0; i < SIZE; i++) {
+        if(temp[i] > avg)
+            countAbove++;
+    }
+
+    // Sort array (Bubble Sort)
+    for(int i = 0; i < SIZE-1; i++) {
+        for(int j = 0; j < SIZE-i-1; j++) {
+            if(temp[j] > temp[j+1]) {
+                float tempSwap = temp[j];
+                temp[j] = temp[j+1];
+                temp[j+1] = tempSwap;
+            }
+        }
+    }
+
+    // Output results
+    cout << "\nAverage Temperature: " << avg;
+    cout << "\nHighest Temperature: " << highest;
+    cout << "\nLowest Temperature: " << lowest;
+    cout << "\nDays Above Average: " << countAbove;
+
+    cout << "\n\nSorted Temperatures: ";
+    for(int i = 0; i < SIZE; i++) {
+        cout << temp[i] << " ";
+    }
+
+    return 0;
+}
