@@ -1,0 +1,202 @@
+#include <iostream>
+using namespace std;
+
+class Product {
+public:
+    int id;
+    string name;
+    int quantity;
+    float price;
+    Product* next;
+
+    Product(int i, string n, int q, float p) {
+        id = i;
+        name = n;
+        quantity = q;
+        price = p;
+        next = NULL;
+    }
+};
+
+class Inventory {
+private:
+    Product* head;
+
+public:
+    Inventory() {
+        head = NULL;
+    }
+
+    void addProduct(int id, string name, int quantity, float price) {
+        Product* newProduct = new Product(id, name, quantity, price);
+        if (head == NULL) {
+            head = newProduct;
+        } else {
+            Product* temp = head;
+            while (temp->next != NULL)
+                temp = temp->next;
+            temp->next = newProduct;
+        }
+        cout << "Product Added Successfully!\n";
+    }
+
+    void deleteProduct(int id) {
+        if (head == NULL) {
+            cout << "Inventory is empty!\n";
+            return;
+        }
+
+        Product* temp = head;
+        Product* prev = NULL;
+
+        if (temp != NULL && temp->id == id) {
+            head = temp->next;
+            delete temp;
+            cout << "Product Deleted!\n";
+            return;
+        }
+
+        while (temp != NULL && temp->id != id) {
+            prev = temp;
+            temp = temp->next;
+        }
+
+        if (temp == NULL) {
+            cout << "Product Not Found!\n";
+            return;
+        }
+
+        prev->next = temp->next;
+        delete temp;
+        cout << "Product Deleted!\n";
+    }
+
+    void searchProduct(int id) {
+        Product* temp = head;
+        while (temp != NULL) {
+            if (temp->id == id) {
+                cout << "\nProduct Found:\n";
+                cout << "ID: " << temp->id << endl;
+                cout << "Name: " << temp->name << endl;
+                cout << "Quantity: " << temp->quantity << endl;
+                cout << "Price: " << temp->price << endl;
+                return;
+            }
+            temp = temp->next;
+        }
+        cout << "Product Not Found!\n";
+    }
+
+    void updateStock(int id, int newQuantity) {
+        Product* temp = head;
+        while (temp != NULL) {
+            if (temp->id == id) {
+                temp->quantity = newQuantity;
+                cout << "Stock Updated!\n";
+                return;
+            }
+            temp = temp->next;
+        }
+        cout << "Product Not Found!\n";
+    }
+
+    void displayLowStock() {
+        Product* temp = head;
+        cout << "\nLow Stock Products (Less than 5):\n";
+        while (temp != NULL) {
+            if (temp->quantity < 5) {
+                cout << temp->name << " (Qty: " << temp->quantity << ")\n";
+            }
+            temp = temp->next;
+        }
+    }
+
+    void displayAll() {
+        if (head == NULL) {
+            cout << "Inventory is empty!\n";
+            return;
+        }
+
+        Product* temp = head;
+        cout << "\nAll Products:\n";
+        while (temp != NULL) {
+            cout << "ID: " << temp->id
+                 << " | Name: " << temp->name
+                 << " | Qty: " << temp->quantity
+                 << " | Price: " << temp->price << endl;
+            temp = temp->next;
+        }
+    }
+};
+
+int main() {
+    Inventory inv;
+    int choice, id, quantity;
+    float price;
+    string name;
+
+    do {
+        cout << "\n===== Smart Grocery Inventory =====\n";
+        cout << "1. Add Product\n";
+        cout << "2. Delete Product\n";
+        cout << "3. Search Product\n";
+        cout << "4. Update Stock\n";
+        cout << "5. Display Low Stock\n";
+        cout << "6. Display All Products\n";
+        cout << "0. Exit\n";
+        cout << "Enter choice: ";
+        cin >> choice;
+
+        switch (choice) {
+        case 1:
+            cout << "Enter ID: ";
+            cin >> id;
+            cout << "Enter Name: ";
+            cin >> name;
+            cout << "Enter Quantity: ";
+            cin >> quantity;
+            cout << "Enter Price: ";
+            cin >> price;
+            inv.addProduct(id, name, quantity, price);
+            break;
+
+        case 2:
+            cout << "Enter ID to delete: ";
+            cin >> id;
+            inv.deleteProduct(id);
+            break;
+
+        case 3:
+            cout << "Enter ID to search: ";
+            cin >> id;
+            inv.searchProduct(id);
+            break;
+
+        case 4:
+            cout << "Enter ID to update: ";
+            cin >> id;
+            cout << "Enter New Quantity: ";
+            cin >> quantity;
+            inv.updateStock(id, quantity);
+            break;
+
+        case 5:
+            inv.displayLowStock();
+            break;
+
+        case 6:
+            inv.displayAll();
+            break;
+
+        case 0:
+            cout << "Exiting Program...\n";
+            break;
+
+        default:
+            cout << "Invalid Choice!\n";
+        }
+
+    } while (choice != 0);
+
+    return 0;
+}
