@@ -1,0 +1,59 @@
+#include <iostream>
+#include <queue>
+#include <deque>
+using namespace std;
+
+class MaxQueue {
+private:
+    queue<int> q;
+    deque<int> maxDeque; // keeps track of max elements
+
+public:
+    void enqueue(int x) {
+        q.push(x);
+
+        // Remove all smaller elements from back of deque
+        while (!maxDeque.empty() && maxDeque.back() < x)
+            maxDeque.pop_back();
+
+        maxDeque.push_back(x);
+    }
+
+    void dequeue() {
+        if (q.empty()) return;
+        if (q.front() == maxDeque.front())
+            maxDeque.pop_front();
+        q.pop();
+    }
+
+    int getMax() {
+        if (maxDeque.empty()) return -1; // empty queue
+        return maxDeque.front();
+    }
+
+    bool empty() {
+        return q.empty();
+    }
+};
+
+int main() {
+    MaxQueue mq;
+
+    mq.enqueue(3);
+    mq.enqueue(1);
+    mq.enqueue(5);
+    mq.enqueue(2);
+
+    cout << "Max: " << mq.getMax() << endl; // 5
+
+    mq.dequeue(); // remove 3
+    cout << "Max: " << mq.getMax() << endl; // 5
+
+    mq.dequeue(); // remove 1
+    cout << "Max: " << mq.getMax() << endl; // 5
+
+    mq.dequeue(); // remove 5
+    cout << "Max: " << mq.getMax() << endl; // 2
+
+    return 0;
+}
