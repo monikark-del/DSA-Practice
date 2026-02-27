@@ -1,0 +1,32 @@
+#include <iostream>
+#include <stack>
+using namespace std;
+
+string removeDuplicates(string s) {
+    stack<char> st;
+
+    for (char ch : s) {
+        if (!st.empty() && st.top() == ch) {
+            st.pop();  // remove duplicate
+        } else {
+            st.push(ch);
+        }
+    }
+
+    // Build result string
+    string result = "";
+    while (!st.empty()) {
+        result = st.top() + result;
+        st.pop();
+    }
+
+    return result;
+}
+
+int main() {
+    string s = "abbaca";
+
+    cout << "Final string: " << removeDuplicates(s);
+
+    return 0;
+}
