@@ -1,0 +1,86 @@
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    int data;
+    Node* next;
+
+    Node(int value) {
+        data = value;
+        next = NULL;
+    }
+};
+
+class LinkedList {
+private:
+    Node* head;
+
+public:
+    LinkedList() {
+        head = NULL;
+    }
+
+    void insert(int value) {
+        Node* newNode = new Node(value);
+        if (head == NULL) {
+            head = newNode;
+            return;
+        }
+
+        Node* temp = head;
+        while (temp->next != NULL) {
+            temp = temp->next;
+        }
+        temp->next = newNode;
+    }
+
+    void removeDuplicates() {
+        Node* current = head;
+
+        while (current != NULL) {
+            Node* runner = current;
+
+            while (runner->next != NULL) {
+                if (runner->next->data == current->data) {
+                    Node* duplicate = runner->next;
+                    runner->next = runner->next->next;
+                    delete duplicate;
+                } else {
+                    runner = runner->next;
+                }
+            }
+            current = current->next;
+        }
+    }
+
+    void display() {
+        Node* temp = head;
+        while (temp != NULL) {
+            cout << temp->data << " -> ";
+            temp = temp->next;
+        }
+        cout << "NULL" << endl;
+    }
+};
+
+int main() {
+    LinkedList list;
+
+    list.insert(10);
+    list.insert(20);
+    list.insert(10);
+    list.insert(30);
+    list.insert(20);
+    list.insert(40);
+
+    cout << "Original List: ";
+    list.display();
+
+    list.removeDuplicates();
+
+    cout << "After Removing Duplicates: ";
+    list.display();
+
+    return 0;
+}
