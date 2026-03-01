@@ -1,0 +1,34 @@
+#include <iostream>
+#include <unordered_map>
+using namespace std;
+
+int firstRepeatedWithSmallestSecondIndex(int arr[], int n) {
+    unordered_map<int, int> firstIndex;
+    int result = -1;
+    int smallestSecondIndex = n;
+
+    for (int i = 0; i < n; i++) {
+        if (firstIndex.find(arr[i]) == firstIndex.end()) {
+            firstIndex[arr[i]] = i;  // store first occurrence
+        } else {
+            // second occurrence found
+            if (i < smallestSecondIndex) {
+                smallestSecondIndex = i;
+                result = arr[i];
+            }
+        }
+    }
+
+    return result;
+}
+
+int main() {
+    int arr[] = {5, 4, 5, 3, 4};
+    int n = sizeof(arr) / sizeof(arr[0]);
+
+    int ans = firstRepeatedWithSmallestSecondIndex(arr, n);
+
+    cout << "Result: " << ans << endl;
+
+    return 0;
+}
