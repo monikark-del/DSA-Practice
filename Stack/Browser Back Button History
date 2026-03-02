@@ -1,0 +1,50 @@
+#include <iostream>
+#include <stack>
+using namespace std;
+
+class BrowserHistory {
+    stack<string> history;
+
+public:
+    void visitPage(string url) {
+        history.push(url);
+        cout << "Visited: " << url << endl;
+    }
+
+    void goBack() {
+        if (history.empty()) {
+            cout << "No history to go back!" << endl;
+            return;
+        }
+
+        history.pop();
+        if (history.empty()) {
+            cout << "No previous page!" << endl;
+        } else {
+            cout << "Back to: " << history.top() << endl;
+        }
+    }
+
+    void showCurrent() {
+        if (history.empty()) {
+            cout << "No pages visited!" << endl;
+            return;
+        }
+        cout << "Current Page: " << history.top() << endl;
+    }
+};
+
+int main() {
+    BrowserHistory bh;
+
+    bh.visitPage("google.com");
+    bh.visitPage("github.com");
+    bh.visitPage("chatgpt.com");
+
+    bh.showCurrent();
+
+    bh.goBack();
+    bh.showCurrent();
+
+    return 0;
+}
