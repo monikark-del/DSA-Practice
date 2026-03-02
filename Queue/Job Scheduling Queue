@@ -1,0 +1,70 @@
+#include <iostream>
+#include <queue>
+using namespace std;
+
+class Job {
+public:
+    int jobId;
+    int time; // execution time
+
+    Job(int id, int t) {
+        jobId = id;
+        time = t;
+    }
+};
+
+class JobScheduler {
+    queue<Job> q;
+    int id = 1;
+
+public:
+    void addJob(int time) {
+        q.push(Job(id, time));
+        cout << "Job " << id << " added with time " << time << " seconds." << endl;
+        id++;
+    }
+
+    void executeJob() {
+        if (q.empty()) {
+            cout << "No jobs to execute!" << endl;
+            return;
+        }
+
+        Job current = q.front();
+        q.pop();
+
+        cout << "Executing Job ID: " << current.jobId
+             << " | Time: " << current.time << " seconds" << endl;
+    }
+
+    void showQueue() {
+        if (q.empty()) {
+            cout << "Job queue is empty!" << endl;
+            return;
+        }
+
+        queue<Job> temp = q;
+        cout << "Jobs in Queue: ";
+        while (!temp.empty()) {
+            cout << "[ID: " << temp.front().jobId
+                 << ", Time: " << temp.front().time << "] ";
+            temp.pop();
+        }
+        cout << endl;
+    }
+};
+
+int main() {
+    JobScheduler js;
+
+    js.addJob(5);
+    js.addJob(10);
+    js.addJob(7);
+
+    js.showQueue();
+
+    js.executeJob();
+    js.showQueue();
+
+    return 0;
+}
