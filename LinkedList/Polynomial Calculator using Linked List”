@@ -1,0 +1,115 @@
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    int coeff;
+    int power;
+    Node* next;
+
+    Node(int c, int p) {
+        coeff = c;
+        power = p;
+        next = NULL;
+    }
+};
+
+class Polynomial {
+private:
+    Node* head;
+
+public:
+    Polynomial() {
+        head = NULL;
+    }
+
+    void insertTerm(int coeff, int power) {
+        Node* newNode = new Node(coeff, power);
+
+        if (head == NULL || head->power < power) {
+            newNode->next = head;
+            head = newNode;
+            return;
+        }
+
+        Node* temp = head;
+        while (temp->next != NULL && temp->next->power > power) {
+            temp = temp->next;
+        }
+
+        if (temp->next != NULL && temp->next->power == power) {
+            temp->next->coeff += coeff;
+        } else {
+            newNode->next = temp->next;
+            temp->next = newNode;
+        }
+    }
+
+    void display() {
+        Node* temp = head;
+        while (temp != NULL) {
+            cout << temp->coeff << "x^" << temp->power;
+            if (temp->next != NULL)
+                cout << " + ";
+            temp = temp->next;
+        }
+        cout << endl;
+    }
+
+    static Polynomial add(Polynomial p1, Polynomial p2) {
+        Polynomial result;
+
+        Node* t1 = p1.head;
+        Node* t2 = p2.head;
+
+        while (t1 != NULL && t2 != NULL) {
+            if (t1->power > t2->power) {
+                result.insertTerm(t1->coeff, t1->power);
+                t1 = t1->next;
+            } else if (t1->power < t2->power) {
+                result.insertTerm(t2->coeff, t2->power);
+                t2 = t2->next;
+            } else {
+                result.insertTerm(t1->coeff + t2->coeff, t1->power);
+                t1 = t1->next;
+                t2 = t2->next;
+            }
+        }
+
+        while (t1 != NULL) {
+            result.insertTerm(t1->coeff, t1->power);
+            t1 = t1->next;
+        }
+
+        while (t2 != NULL) {
+            result.insertTerm(t2->coeff, t2->power);
+            t2 = t2->next;
+        }
+
+        return result;
+    }
+};
+
+int main() {
+    Polynomial p1, p2;
+
+    p1.insertTerm(5, 3);
+    p1.insertTerm(4, 2);
+    p1.insertTerm(2, 0);
+
+    p2.insertTerm(3, 3);
+    p2.insertTerm(1, 1);
+
+    cout << "Polynomial 1: ";
+    p1.display();
+
+    cout << "Polynomial 2: ";
+    p2.display();
+
+    Polynomial result = Polynomial::add(p1, p2);
+
+    cout << "Result (Addition): ";
+    result.display();
+
+    return 0;
+}
