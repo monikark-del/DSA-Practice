@@ -1,0 +1,56 @@
+#include <iostream>
+#include <stack>
+using namespace std;
+
+bool isMatching(char open, char close)
+{
+    if(open == '(' && close == ')') return true;
+    if(open == '{' && close == '}') return true;
+    if(open == '[' && close == ']') return true;
+    return false;
+}
+
+int main()
+{
+    string expr;
+    cout << "Enter expression: ";
+    cin >> expr;
+
+    stack<int> pos;
+    stack<char> brackets;
+
+    for(int i = 0; i < expr.length(); i++)
+    {
+        if(expr[i] == '(' || expr[i] == '{' || expr[i] == '[')
+        {
+            brackets.push(expr[i]);
+            pos.push(i);
+        }
+        else if(expr[i] == ')' || expr[i] == '}' || expr[i] == ']')
+        {
+            if(brackets.empty())
+            {
+                cout << "Extra closing bracket at position " << i << endl;
+                return 0;
+            }
+
+            if(isMatching(brackets.top(), expr[i]))
+            {
+                brackets.pop();
+                pos.pop();
+            }
+            else
+            {
+                cout << "Mismatched bracket at position " << i << endl;
+                return 0;
+            }
+        }
+    }
+
+    if(brackets.empty())
+        cout << "Expression is balanced\n";
+    else
+        cout << "Unmatched opening bracket at position " << pos.top() << endl;
+
+    return 0;
+}
