@@ -1,0 +1,68 @@
+#include <iostream>
+using namespace std;
+
+#define SIZE 10
+
+string queueArr[SIZE];
+int front = -1;
+int rear = -1;
+
+void enqueue(string car)
+{
+    if(rear == SIZE-1)
+    {
+        cout << "Parking queue full\n";
+        return;
+    }
+
+    if(front == -1)
+        front = 0;
+
+    rear++;
+    queueArr[rear] = car;
+
+    cout << car << " added to waiting queue\n";
+}
+
+void dequeue()
+{
+    if(front == -1 || front > rear)
+    {
+        cout << "No cars waiting\n";
+        return;
+    }
+
+    cout << queueArr[front] << " entered parking lot\n";
+    front++;
+}
+
+void display()
+{
+    if(front == -1 || front > rear)
+    {
+        cout << "Queue empty\n";
+        return;
+    }
+
+    cout << "Waiting Cars:\n";
+
+    for(int i = front; i <= rear; i++)
+    {
+        cout << queueArr[i] << endl;
+    }
+}
+
+int main()
+{
+    enqueue("KA01AB1234");
+    enqueue("KA02CD5678");
+    enqueue("KA03EF9101");
+
+    display();
+
+    dequeue();
+
+    display();
+
+    return 0;
+}
