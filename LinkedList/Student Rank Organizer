@@ -1,0 +1,65 @@
+#include <iostream>
+using namespace std;
+
+struct Node
+{
+    string name;
+    int marks;
+    Node* next;
+};
+
+Node* head = NULL;
+
+void insertStudent(string name, int marks)
+{
+    Node* newNode = new Node();
+    newNode->name = name;
+    newNode->marks = marks;
+    newNode->next = NULL;
+
+    if(head == NULL || head->marks < marks)
+    {
+        newNode->next = head;
+        head = newNode;
+    }
+    else
+    {
+        Node* temp = head;
+
+        while(temp->next != NULL && temp->next->marks >= marks)
+        {
+            temp = temp->next;
+        }
+
+        newNode->next = temp->next;
+        temp->next = newNode;
+    }
+}
+
+void display()
+{
+    Node* temp = head;
+
+    cout << "\nStudent Ranking List:\n";
+
+    int rank = 1;
+
+    while(temp != NULL)
+    {
+        cout << rank << ". " << temp->name << " - " << temp->marks << endl;
+        temp = temp->next;
+        rank++;
+    }
+}
+
+int main()
+{
+    insertStudent("Rahul", 78);
+    insertStudent("Anjali", 92);
+    insertStudent("Kiran", 85);
+    insertStudent("Meena", 88);
+
+    display();
+
+    return 0;
+}
