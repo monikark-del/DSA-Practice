@@ -1,0 +1,91 @@
+#include <iostream>
+using namespace std;
+
+struct Task {
+    string name;
+    int daysLeft;
+    Task* next;
+};
+
+Task* head = NULL;
+
+// Add task
+void addTask(string name, int days) {
+    Task* newTask = new Task();
+    newTask->name = name;
+    newTask->daysLeft = days;
+    newTask->next = NULL;
+
+    if(head == NULL)
+        head = newTask;
+    else {
+        Task* temp = head;
+        while(temp->next != NULL)
+            temp = temp->next;
+
+        temp->next = newTask;
+    }
+}
+
+// Display tasks
+void displayTasks() {
+    Task* temp = head;
+
+    cout << "All Tasks:\n";
+    while(temp != NULL) {
+        cout << temp->name << " (Deadline in " << temp->daysLeft << " days)\n";
+        temp = temp->next;
+    }
+}
+
+// Show urgent tasks
+void urgentTasks() {
+    Task* temp = head;
+
+    cout << "\nUrgent Tasks:\n";
+    while(temp != NULL) {
+        if(temp->daysLeft <= 2)
+            cout << temp->name << " needs attention!\n";
+
+        temp = temp->next;
+    }
+}
+
+// Delete task
+void deleteTask(string name) {
+    Task *temp = head, *prev = NULL;
+
+    while(temp != NULL && temp->name != name) {
+        prev = temp;
+        temp = temp->next;
+    }
+
+    if(temp == NULL) {
+        cout << "Task not found\n";
+        return;
+    }
+
+    if(prev == NULL)
+        head = head->next;
+    else
+        prev->next = temp->next;
+
+    delete temp;
+}
+
+int main() {
+
+    addTask("DSA Assignment", 3);
+    addTask("Project Report", 1);
+    addTask("Lab Record", 2);
+
+    displayTasks();
+    urgentTasks();
+
+    cout << "\nAfter completing Lab Record\n";
+    deleteTask("Lab Record");
+
+    displayTasks();
+
+    return 0;
+}
