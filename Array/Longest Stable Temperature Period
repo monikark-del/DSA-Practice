@@ -1,0 +1,40 @@
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+int main() {
+    int n;
+
+    cout << "Enter number of days: ";
+    cin >> n;
+
+    int temp[n];
+
+    cout << "Enter temperatures:\n";
+    for(int i = 0; i < n; i++) {
+        cin >> temp[i];
+    }
+
+    int maxLength = 1;
+    int currentLength = 1;
+
+    for(int i = 1; i < n; i++) {
+
+        if(abs(temp[i] - temp[i-1]) <= 2) {
+            currentLength++;
+        } else {
+            if(currentLength > maxLength)
+                maxLength = currentLength;
+
+            currentLength = 1;
+        }
+    }
+
+    if(currentLength > maxLength)
+        maxLength = currentLength;
+
+    cout << "Longest stable temperature period: "
+         << maxLength << " days";
+
+    return 0;
+}
