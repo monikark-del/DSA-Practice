@@ -1,0 +1,44 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+
+    cout << "Enter number of hours recorded: ";
+    cin >> n;
+
+    int visitors[n];
+
+    cout << "Enter visitors for each hour:\n";
+    for(int i = 0; i < n; i++) {
+        cin >> visitors[i];
+    }
+
+    int maxVisitors = visitors[0];
+    int peakHour = 0;
+    int sum = 0;
+
+    for(int i = 0; i < n; i++) {
+        sum += visitors[i];
+
+        if(visitors[i] > maxVisitors) {
+            maxVisitors = visitors[i];
+            peakHour = i;
+        }
+    }
+
+    float average = (float)sum / n;
+
+    cout << "\nPeak traffic hour: " << peakHour + 1 << endl;
+    cout << "Maximum visitors: " << maxVisitors << endl;
+    cout << "Average visitors: " << average << endl;
+
+    cout << "\nHours with above average traffic:\n";
+    for(int i = 0; i < n; i++) {
+        if(visitors[i] > average) {
+            cout << "Hour " << i+1 << " -> " << visitors[i] << " visitors\n";
+        }
+    }
+
+    return 0;
+}
