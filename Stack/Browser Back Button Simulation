@@ -1,0 +1,64 @@
+#include <iostream>
+using namespace std;
+
+#define MAX 10
+
+class Browser {
+    string stack[MAX];
+    int top;
+
+public:
+    Browser() {
+        top = -1;
+    }
+
+    void visit(string page) {
+        if(top == MAX-1) {
+            cout << "History Full\n";
+        }
+        else {
+            stack[++top] = page;
+            cout << "Visited: " << page << endl;
+        }
+    }
+
+    void back() {
+        if(top <= 0) {
+            cout << "No previous page\n";
+        }
+        else {
+            top--;
+            cout << "Back to: " << stack[top] << endl;
+        }
+    }
+
+    void currentPage() {
+        if(top == -1)
+            cout << "No page opened\n";
+        else
+            cout << "Current Page: " << stack[top] << endl;
+    }
+
+    void showHistory() {
+        cout << "\nBrowser History:\n";
+        for(int i = top; i >= 0; i--) {
+            cout << stack[i] << endl;
+        }
+    }
+};
+
+int main() {
+    Browser b;
+
+    b.visit("google.com");
+    b.visit("github.com");
+    b.visit("leetcode.com");
+
+    b.currentPage();
+    b.back();
+    b.currentPage();
+
+    b.showHistory();
+
+    return 0;
+}
