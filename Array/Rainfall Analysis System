@@ -1,0 +1,36 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    float rain[7];
+    float total = 0;
+    int maxDay = 0, minDay = 0;
+
+    cout << "Enter rainfall for 7 days (in mm):\n";
+
+    for(int i = 0; i < 7; i++) {
+        cout << "Day " << i+1 << ": ";
+        cin >> rain[i];
+        total += rain[i];
+    }
+
+    for(int i = 1; i < 7; i++) {
+        if(rain[i] > rain[maxDay])
+            maxDay = i;
+
+        if(rain[i] < rain[minDay])
+            minDay = i;
+    }
+
+    cout << "\nTotal Rainfall: " << total << " mm";
+    cout << "\nHighest Rainfall: Day " << maxDay+1 << " (" << rain[maxDay] << " mm)";
+    cout << "\nLowest Rainfall: Day " << minDay+1 << " (" << rain[minDay] << " mm)";
+
+    cout << "\n\nHeavy Rain Days (>50 mm):\n";
+    for(int i = 0; i < 7; i++) {
+        if(rain[i] > 50)
+            cout << "Day " << i+1 << " - " << rain[i] << " mm\n";
+    }
+
+    return 0;
+}
