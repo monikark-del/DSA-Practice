@@ -1,0 +1,66 @@
+#include <iostream>
+using namespace std;
+
+#define MAX 100
+
+class Stack {
+    char arr[MAX];
+    int top;
+
+public:
+    Stack() {
+        top = -1;
+    }
+
+    void push(char x) {
+        arr[++top] = x;
+    }
+
+    char pop() {
+        if(top == -1)
+            return '#';
+        return arr[top--];
+    }
+
+    bool isEmpty() {
+        return top == -1;
+    }
+};
+
+bool isMatchingPair(char open, char close) {
+    if(open == '(' && close == ')') return true;
+    if(open == '{' && close == '}') return true;
+    if(open == '[' && close == ']') return true;
+    return false;
+}
+
+int main() {
+    Stack s;
+    string exp;
+
+    cout << "Enter expression: ";
+    cin >> exp;
+
+    for(int i = 0; i < exp.length(); i++) {
+
+        if(exp[i] == '(' || exp[i] == '{' || exp[i] == '[')
+            s.push(exp[i]);
+
+        else if(exp[i] == ')' || exp[i] == '}' || exp[i] == ']') {
+
+            char top = s.pop();
+
+            if(!isMatchingPair(top, exp[i])) {
+                cout << "Not Balanced";
+                return 0;
+            }
+        }
+    }
+
+    if(s.isEmpty())
+        cout << "Balanced Expression";
+    else
+        cout << "Not Balanced";
+
+    return 0;
+}
