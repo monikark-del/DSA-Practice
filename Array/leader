@@ -1,0 +1,26 @@
+#include<iostream>
+using namespace std;
+
+void leader(int a[], int n)
+{
+    int maxRight = a[n-1];
+    cout << maxRight << " ";
+
+    for(int i=n-1; i>0; i--)
+    {
+        if(a[i-1] > maxRight)
+        {
+            cout << a[i-1] << " ";
+            maxRight = a[i-1];
+        }
+    }
+}
+
+int main()
+{
+  int arr[]={16,17,4,3,5,2};
+  int n=size(arr);
+ leader(arr,n);
+  return 0;
+
+}
