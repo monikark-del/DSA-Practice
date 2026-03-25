@@ -1,0 +1,46 @@
+#include<iostream>
+using namespace std;
+void positive_negative(int a[],int n)
+{
+    int i=0,j=0,k=0,m=0;
+    if(a[0]<0)
+    {
+        for(int x=1;x<n;x++)
+        {
+            if(a[x]>=0)
+            {
+                swap(a[0],a[x]);
+                break;
+            }
+        }
+    }
+    for(j=0;j<n;j++,k++)
+{    
+    if(a[j]<0)
+    {
+        int temp=a[k];
+         m=j-(i+1);
+        while(m>0)
+        {
+            a[k]=a[k-1];
+            k--;
+            m--;
+        }
+        a[k]=temp;
+        i=i+2;
+        k=j;
+
+    }
+}
+    for(int i=0;i<n;i++)
+    {
+        cout<<a[i]<<" ";
+    }
+}
+int main()
+{
+    int arr[]={-1,3,-2,1};
+    int n=size(arr);
+    positive_negative(arr,n);
+    return 0;
+}
